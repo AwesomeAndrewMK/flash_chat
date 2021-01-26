@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flash_chat_flutter/screens/welcome_screen.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:flash_chat_flutter/components/messages_stream.dart';
 
 final _firestore = FirebaseFirestore.instance;
 User loggedInUser;
@@ -22,7 +25,6 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     getCurrentUser();
-    // messagesStream();
   }
 
   void getCurrentUser() {
@@ -30,7 +32,6 @@ class _ChatScreenState extends State<ChatScreen> {
       final user = _auth.currentUser;
       if (user != null) {
         loggedInUser = user;
-        print(loggedInUser.email);
       }
     } catch (e) {
       print(e);
@@ -45,13 +46,41 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.close),
-              onPressed: () async {
-                try {
-                  await _auth.signOut();
-                  Navigator.pop(context);
-                } catch (e) {
-                  print(e);
-                }
+              onPressed: () {
+                Alert(
+                  context: context,
+                  title: 'Are you sure you want to exit?',
+                  type: AlertType.warning,
+                  buttons: [
+                    DialogButton(
+                      child: Text(
+                        "Yes",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      onPressed: () async {
+                        try {
+                          await _auth.signOut();
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            WelcomeScreen.id,
+                            (route) => false,
+                          );
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
+                      color: Colors.red,
+                    ),
+                    DialogButton(
+                      child: Text(
+                        "No",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                      color: Colors.blueAccent,
+                    )
+                  ],
+                ).show();
               }),
         ],
         title: Text('⚡️Chat'),
@@ -62,7 +91,9 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            MessagesStream(),
+            MessagesStream(
+              email: loggedInUser.email,
+            ),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -70,6 +101,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: <Widget>[
                   Expanded(
                     child: TextField(
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
                       controller: messageTextController,
                       onChanged: (value) {
                         setState(() {
@@ -102,97 +135,6 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class MessagesStream extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection('messages').snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData)
-          return Center(
-            child: CircularProgressIndicator(
-              backgroundColor: Colors.lightBlueAccent,
-            ),
-          );
-        final messages = snapshot.data.docs.reversed;
-        List<MessageBubble> messageWidgets = [];
-        for (var message in messages) {
-          final messageText = message.data()['text'];
-          final messageSender = message.data()['sender'];
-
-          final currentUser = loggedInUser.email;
-
-          MessageBubble messageBubble = MessageBubble(
-            text: messageText,
-            sender: messageSender,
-            isMe: currentUser == messageSender,
-          );
-          messageWidgets.add(messageBubble);
-        }
-        return Expanded(
-          child: ListView(
-            reverse: true,
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            children: messageWidgets,
-          ),
-        );
-      },
-    );
-  }
-}
-
-class MessageBubble extends StatelessWidget {
-  MessageBubble({
-    @required this.sender,
-    @required this.text,
-    @required this.isMe,
-  });
-
-  final String sender;
-  final String text;
-  final bool isMe;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: Column(
-        crossAxisAlignment:
-            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-        children: [
-          Text(
-            sender,
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.black54,
-            ),
-          ),
-          Material(
-            borderRadius: BorderRadius.only(
-              topLeft: isMe ? Radius.circular(30) : Radius.zero,
-              topRight: isMe ? Radius.zero : Radius.circular(30),
-              bottomLeft: Radius.circular(30),
-              bottomRight: Radius.circular(30),
-            ),
-            elevation: 5,
-            color: isMe ? Colors.lightBlueAccent : Colors.white,
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: Text(
-                text,
-                style: TextStyle(
-                  fontSize: 15,
-                  color: isMe ? Colors.white : Colors.black54,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

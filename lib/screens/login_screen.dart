@@ -17,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String email;
   String password;
+  String errorMessage;
 
   bool _showSpinner = false;
 
@@ -46,6 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               TextField(
                 textAlign: TextAlign.center,
+                autocorrect: false,
                 keyboardType: TextInputType.emailAddress,
                 onChanged: (value) {
                   setState(() {
@@ -61,6 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               TextField(
                 textAlign: TextAlign.center,
+                autocorrect: false,
                 obscureText: true,
                 onChanged: (value) {
                   setState(() {
@@ -82,24 +85,37 @@ class _LoginScreenState extends State<LoginScreen> {
                     _showSpinner = true;
                   });
                   try {
-                    final registeredUser = await _auth.signInWithEmailAndPassword(
+                    final registeredUser =
+                        await _auth.signInWithEmailAndPassword(
                       email: email,
                       password: password,
                     );
                     if (registeredUser != null) {
-                      Navigator.pushNamed(context, ChatScreen.id);
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        ChatScreen.id,
+                        (route) => false,
+                      );
                     }
                     setState(() {
                       _showSpinner = false;
                     });
                   } catch (e) {
-                    print(e);
                     setState(() {
+                      errorMessage = e.toString();
                       _showSpinner = false;
                     });
                   }
                 },
               ),
+              errorMessage != null
+                  ? Text(
+                      errorMessage,
+                      style: TextStyle(
+                        color: Colors.red,
+                      ),
+                    )
+                  : Container(),
             ],
           ),
         ),

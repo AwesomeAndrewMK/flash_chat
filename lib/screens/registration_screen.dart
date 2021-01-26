@@ -16,6 +16,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final _auth = FirebaseAuth.instance;
   String email;
   String password;
+  String errorMessage;
 
   bool _showSpinner = false;
 
@@ -45,6 +46,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
               TextField(
                 textAlign: TextAlign.center,
+                autocorrect: false,
                 keyboardType: TextInputType.emailAddress,
                 onChanged: (value) {
                   setState(() {
@@ -60,6 +62,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
               TextField(
                 textAlign: TextAlign.center,
+                autocorrect: false,
                 obscureText: true,
                 onChanged: (value) {
                   setState(() {
@@ -86,19 +89,31 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       password: password,
                     );
                     if (newUser != null) {
-                      Navigator.pushNamed(context, ChatScreen.id);
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        ChatScreen.id,
+                        (route) => false,
+                      );
                     }
                     setState(() {
                       _showSpinner = false;
                     });
                   } catch (e) {
-                    print(e);
                     setState(() {
+                      errorMessage = e.toString();
                       _showSpinner = false;
                     });
                   }
                 },
               ),
+              errorMessage != null
+                  ? Text(
+                      errorMessage,
+                      style: TextStyle(
+                        color: Colors.red,
+                      ),
+                    )
+                  : Container(),
             ],
           ),
         ),
