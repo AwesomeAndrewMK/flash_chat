@@ -4,6 +4,7 @@ import 'package:flash_chat_flutter/screens/chat_screen.dart';
 import 'package:flash_chat_flutter/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -23,6 +24,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Future<UserCredential> signInWithFacebook() async {
+      final AccessToken accessToken = await FacebookAuth.instance.login();
+      final FacebookAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(accessToken.token);
+      await _auth.signInWithCredential(facebookAuthCredential);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        ChatScreen.id,
+        (route) => false,
+      );
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: ModalProgressHUD(
@@ -116,6 +129,23 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     )
                   : Container(),
+              GestureDetector(
+                onTap: signInWithFacebook,
+                child: Container(
+                  color: Colors.blueAccent,
+                  child: Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Text(
+                      'CONTINUE WITH FACEBOOK',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

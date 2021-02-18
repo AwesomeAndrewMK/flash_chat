@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Flash chat</string>
+    <string name="facebook_app_id">1121656511579445</string>
+    <string name="fb_login_protocol_scheme">fb1121656511579445</string>
+</resources>
