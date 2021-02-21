@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flash_chat_flutter/screens/welcome_screen.dart';
+import 'package:flash_chat_flutter/screens/welcome/welcome_screen.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flash_chat_flutter/components/messages_stream.dart';
 

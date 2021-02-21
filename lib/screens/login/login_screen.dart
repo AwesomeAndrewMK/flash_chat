@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/components/rounded_button.dart';
-import 'package:flash_chat_flutter/screens/chat_screen.dart';
 import 'package:flash_chat_flutter/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import '../main/main_screen.dart';
 
-class RegistrationScreen extends StatefulWidget {
-  static const String id = 'registration_screen';
+class LoginScreen extends StatefulWidget {
+  static const String id = 'login_screen';
 
   @override
-  _RegistrationScreenState createState() => _RegistrationScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
-  final _auth = FirebaseAuth.instance;
+class _LoginScreenState extends State<LoginScreen> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
   String email;
   String password;
   String errorMessage;
@@ -22,6 +24,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Future<UserCredential> signInWithFacebook() async {
+      final AccessToken accessToken = await FacebookAuth.instance.login();
+      final FacebookAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(accessToken.token);
+      await _auth.signInWithCredential(facebookAuthCredential);
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        MainScreen.id,
+        (route) => false,
+      );
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: ModalProgressHUD(
@@ -77,21 +91,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 height: 24.0,
               ),
               RoundedButton(
-                title: 'Register',
-                color: Colors.blueAccent,
+                title: 'Log in',
+                color: Colors.lightBlueAccent,
                 onPressed: () async {
                   setState(() {
                     _showSpinner = true;
                   });
                   try {
-                    final newUser = await _auth.createUserWithEmailAndPassword(
+                    final registeredUser =
+                        await _auth.signInWithEmailAndPassword(
                       email: email,
                       password: password,
                     );
-                    if (newUser != null) {
+                    if (registeredUser != null) {
                       Navigator.pushNamedAndRemoveUntil(
                         context,
-                        ChatScreen.id,
+                        MainScreen.id,
                         (route) => false,
                       );
                     }
@@ -114,6 +129,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       ),
                     )
                   : Container(),
+              GestureDetector(
+                onTap: signInWithFacebook,
+                child: Container(
+                  color: Colors.blueAccent,
+                  child: Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Text(
+                      'CONTINUE WITH FACEBOOK',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

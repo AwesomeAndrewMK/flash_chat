@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/constants.dart';
+import 'package:share/share.dart';
 
 class MovieTile extends StatelessWidget {
   MovieTile({
@@ -7,12 +8,14 @@ class MovieTile extends StatelessWidget {
     this.onAddToFavourites,
     this.isFavourite,
     this.isItemInFavourites,
+    this.movieId,
   });
 
   final dynamic item;
   final VoidCallback onAddToFavourites;
   final bool isFavourite;
   final bool isItemInFavourites;
+  final int movieId;
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +94,10 @@ class MovieTile extends StatelessWidget {
                                         ),
                                       ),
                                       GestureDetector(
-                                        onTap: () {},
+                                        onTap: () {
+                                          Share.share(
+                                              'https://www.themoviedb.org/movie/$movieId');
+                                        },
                                         child: Text(
                                           'SHARE',
                                           style: TextStyle(

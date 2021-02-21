@@ -32,4 +32,20 @@ class MovieDB {
       }
     }
   }
+
+  storeFavouriteMovies(List favouritesMovies) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('favouritesMovies', json.encode(favouritesMovies));
+  }
+
+  Future getFavouriteMovies() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String favouritesMovies = prefs.getString('favouritesMovies');
+
+    if (favouritesMovies == null) {
+      return [];
+    } else {
+      return json.decode(favouritesMovies);
+    }
+  }
 }

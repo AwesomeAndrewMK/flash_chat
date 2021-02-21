@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'movies/movies_screen.dart';
-import 'chat_screen.dart';
+import '../movies/movies_screen.dart';
+import '../chat/chat_screen.dart';
 
 class MainScreen extends StatefulWidget {
   static const String id = 'main_screen';

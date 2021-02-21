@@ -14,11 +14,20 @@ class MoviesScreen extends StatefulWidget {
 class _MoviesScreenState extends State<MoviesScreen> {
   MovieDB movieDB = MovieDB();
 
+  String _avatar;
+  List<dynamic> movies;
+  List<dynamic> favouritesMovies = [];
+
   Future getMovies() async {
     dynamic res = await movieDB.getMoviesList();
     setState(() {
       movies = res;
     });
+  }
+
+  Future getFavMovies() async {
+    var favMovies = await movieDB.getFavouriteMovies();
+    favouritesMovies = favMovies;
   }
 
   Future getUserImage() async {
@@ -28,15 +37,12 @@ class _MoviesScreenState extends State<MoviesScreen> {
     });
   }
 
-  String _avatar;
-  List<dynamic> movies;
-  List<dynamic> favouritesMovies = [];
-
   @override
   void initState() {
     super.initState();
 
     getUserImage();
+    getFavMovies();
     getMovies();
   }
 
@@ -96,6 +102,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
 
                               return MovieTile(
                                   item: item,
+                                  movieId: item['id'],
                                   isItemInFavourites: isItemInFavourites(),
                                   onAddToFavourites: () {
                                     if (isItemInFavourites()) {
@@ -103,10 +110,14 @@ class _MoviesScreenState extends State<MoviesScreen> {
                                         favouritesMovies.removeAt(
                                             favouritesMovies.indexWhere((el) =>
                                                 el['id'] == item['id']));
+                                        movieDB.storeFavouriteMovies(
+                                            favouritesMovies);
                                       });
                                     } else {
                                       setState(() {
                                         favouritesMovies.add(item);
+                                        movieDB.storeFavouriteMovies(
+                                            favouritesMovies);
                                       });
                                     }
                                   });
