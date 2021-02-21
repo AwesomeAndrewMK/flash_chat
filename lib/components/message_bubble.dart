@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flash_chat_flutter/constants.dart';
 
 class MessageBubble extends StatelessWidget {
   MessageBubble({
@@ -34,7 +35,7 @@ class MessageBubble extends StatelessWidget {
               bottomRight: Radius.circular(30),
             ),
             elevation: 5,
-            color: isMe ? Colors.lightBlueAccent : Colors.white,
+            color: isMe ? mainAppColor : Colors.white,
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Text(

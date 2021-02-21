@@ -48,6 +48,7 @@ class _ChatScreenState extends State<ChatScreen> {
               icon: Icon(Icons.close),
               onPressed: () {
                 Alert(
+                  closeFunction: () {},
                   context: context,
                   title: 'Are you sure you want to exit?',
                   type: AlertType.warning,
@@ -84,7 +85,7 @@ class _ChatScreenState extends State<ChatScreen> {
               }),
         ],
         title: Text('⚡️Chat'),
-        backgroundColor: Colors.lightBlueAccent,
+        backgroundColor: mainAppColor,
       ),
       body: SafeArea(
         child: Column(

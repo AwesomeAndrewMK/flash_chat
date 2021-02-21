@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/components/rounded_button.dart';
-import 'package:flash_chat_flutter/screens/chat_screen.dart';
 import 'package:flash_chat_flutter/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'main_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await _auth.signInWithCredential(facebookAuthCredential);
       Navigator.pushNamedAndRemoveUntil(
         context,
-        ChatScreen.id,
+        MainScreen.id,
         (route) => false,
       );
     }
@@ -106,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (registeredUser != null) {
                       Navigator.pushNamedAndRemoveUntil(
                         context,
-                        ChatScreen.id,
+                        MainScreen.id,
                         (route) => false,
                       );
                     }
