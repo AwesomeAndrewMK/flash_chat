@@ -3,10 +3,11 @@ import 'package:flash_chat_flutter/constants.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flash_chat_flutter/services/movieDB.dart';
 import 'components/movie_tile.dart';
+import 'package:flash_chat_flutter/services/handleMoviesList.dart';
+import './components/user_avatar.dart';
 
 class MoviesScreen extends StatefulWidget {
   static const String id = 'movies_screen';
-
   @override
   _MoviesScreenState createState() => _MoviesScreenState();
 }
@@ -15,34 +16,16 @@ class _MoviesScreenState extends State<MoviesScreen> {
   MovieDB movieDB = MovieDB();
 
   String _avatar;
-  List<dynamic> movies;
+  Map<String, List<dynamic>> movies;
   List<dynamic> favouritesMovies = [];
-
-  Future getMovies() async {
-    dynamic res = await movieDB.getMoviesList();
-    setState(() {
-      movies = res;
-    });
-  }
-
-  Future getFavMovies() async {
-    var favMovies = await movieDB.getFavouriteMovies();
-    favouritesMovies = favMovies;
-  }
-
-  Future getUserImage() async {
-    var userData = await FacebookAuth.instance.getUserData();
-    setState(() {
-      _avatar = userData['picture']['data']['url'];
-    });
-  }
+  List<String> moviesTitles;
 
   @override
   void initState() {
     super.initState();
 
-    getUserImage();
-    getFavMovies();
+    getUserAvatar();
+    getFavouriteMovies();
     getMovies();
   }
 
@@ -54,16 +37,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: mainAppColor,
-            actions: [
-              Padding(
-                padding: EdgeInsets.only(right: 8),
-                child: CircleAvatar(
-                  backgroundImage: _avatar != null
-                      ? NetworkImage(_avatar)
-                      : AssetImage('images/avatar_placeholder.png'),
-                ),
-              )
-            ],
+            actions: [UserAvatar(avatar: _avatar)],
             bottom: TabBar(
               indicatorColor: Colors.yellow,
               tabs: [
@@ -86,13 +60,13 @@ class _MoviesScreenState extends State<MoviesScreen> {
                     : RefreshIndicator(
                         onRefresh: getMovies,
                         child: ListView.builder(
-                            itemCount: movies?.length,
+                            itemCount: moviesTitles.length,
                             itemBuilder: (context, index) {
-                              var item = movies[index];
-
-                              bool isItemInFavourites() {
-                                var contain = favouritesMovies
-                                    .where((el) => el['id'] == item['id']);
+                              String item = moviesTitles[index];
+                              bool isItemInFavourites(item) {
+                                var contain = favouritesMovies.where(
+                                    (favouriteMovie) =>
+                                        favouriteMovie['id'] == item['id']);
                                 if (contain.isEmpty) {
                                   return false;
                                 } else {
@@ -100,27 +74,55 @@ class _MoviesScreenState extends State<MoviesScreen> {
                                 }
                               }
 
-                              return MovieTile(
-                                  item: item,
-                                  movieId: item['id'],
-                                  isItemInFavourites: isItemInFavourites(),
-                                  onAddToFavourites: () {
-                                    if (isItemInFavourites()) {
-                                      setState(() {
-                                        favouritesMovies.removeAt(
-                                            favouritesMovies.indexWhere((el) =>
-                                                el['id'] == item['id']));
-                                        movieDB.storeFavouriteMovies(
-                                            favouritesMovies);
-                                      });
-                                    } else {
-                                      setState(() {
-                                        favouritesMovies.add(item);
-                                        movieDB.storeFavouriteMovies(
-                                            favouritesMovies);
-                                      });
-                                    }
+                              void onAddToFavourites(movie) {
+                                if (isItemInFavourites(movie)) {
+                                  setState(() {
+                                    favouritesMovies.removeAt(favouritesMovies
+                                        .indexWhere((favouriteMovie) =>
+                                            favouriteMovie['id'] ==
+                                            movie['id']));
+                                    movieDB
+                                        .storeFavouriteMovies(favouritesMovies);
                                   });
+                                } else {
+                                  setState(() {
+                                    favouritesMovies.add(movie);
+                                    movieDB
+                                        .storeFavouriteMovies(favouritesMovies);
+                                  });
+                                }
+                              }
+
+                              return Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(8, 24, 8, 8),
+                                      child: Text(
+                                        item,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    Column(
+                                      children: movies[item]
+                                          .map<Widget>(
+                                            (movie) => MovieTile(
+                                                item: movie,
+                                                isItemInFavourites:
+                                                    isItemInFavourites(movie),
+                                                onAddToFavourites: () {
+                                                  onAddToFavourites(movie);
+                                                }),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ],
+                                ),
+                              );
                             }),
                       ),
               ),
@@ -152,5 +154,32 @@ class _MoviesScreenState extends State<MoviesScreen> {
         ),
       ),
     );
+  }
+
+  Future getMovies() async {
+    List<dynamic> res = await movieDB.getMoviesList();
+    HandleMoviesList groupedMovies = HandleMoviesList(moviesList: res);
+    setState(() {
+      movies = groupedMovies.getGroupedMovies();
+      moviesTitles = getMoviesTitles();
+    });
+  }
+
+  List getMoviesTitles() {
+    List moviesTitles = movies.keys.map((el) => el).toList();
+    moviesTitles.sort((a, b) => a.compareTo(b));
+    return moviesTitles;
+  }
+
+  Future getFavouriteMovies() async {
+    List<dynamic> favMovies = await movieDB.getFavouriteMovies();
+    favouritesMovies = favMovies;
+  }
+
+  Future getUserAvatar() async {
+    var userData = await FacebookAuth.instance.getUserData();
+    setState(() {
+      _avatar = userData['picture']['data']['url'];
+    });
   }
 }
