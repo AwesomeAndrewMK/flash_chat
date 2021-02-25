@@ -56,10 +56,13 @@ class _MoviesScreenState extends State<MoviesScreen> {
               Tab(
                 child: movies == null
                     ? Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(mainAppColor),
+                        ),
                       )
                     : RefreshIndicator(
                         onRefresh: getMovies,
+                        color: mainAppColor,
                         child: ListView.builder(
                             itemCount: moviesTitles.length,
                             itemBuilder: (context, index) {
