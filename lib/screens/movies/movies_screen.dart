@@ -6,6 +6,7 @@ import 'package:flash_chat_flutter/services/movieDB.dart';
 import 'components/movie_tile.dart';
 import 'package:flash_chat_flutter/services/handleMoviesList.dart';
 import './components/user_avatar.dart';
+import 'package:flash_chat_flutter/components/loader.dart';
 
 class MoviesScreen extends StatefulWidget {
   static const String id = 'movies_screen';
@@ -55,11 +56,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
             children: [
               Tab(
                 child: movies == null
-                    ? Center(
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation(mainAppColor),
-                        ),
-                      )
+                    ? Loader()
                     : RefreshIndicator(
                         onRefresh: getMovies,
                         color: mainAppColor,

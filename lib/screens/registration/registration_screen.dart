@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flash_chat_flutter/components/rounded_button.dart';
+import 'package:flash_chat_flutter/components/main_button.dart';
 import 'package:flash_chat_flutter/screens/chat/chat_screen.dart';
 import 'package:flash_chat_flutter/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -76,7 +76,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               SizedBox(
                 height: 24.0,
               ),
-              RoundedButton(
+              MainButton(
                 title: 'Register',
                 color: Colors.blueAccent,
                 onPressed: () async {

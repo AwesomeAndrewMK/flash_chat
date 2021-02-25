@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../login/login_screen.dart';
 import '../registration/registration_screen.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flash_chat_flutter/components/rounded_button.dart';
+import 'package:flash_chat_flutter/components/main_button.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static const String id = 'welcome_screen';
@@ -48,6 +48,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: animation.value,
+      appBar: AppBar(
+        backgroundColor: Colors.grey,
+        toolbarHeight: 0,
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -63,13 +67,29 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     height: 60,
                   ),
                 ),
-                TypewriterAnimatedTextKit(
-                  text: ['Flash Chat'],
-                  speed: Duration(milliseconds: 200),
-                  textStyle: TextStyle(
-                    fontSize: 32.0,
-                    fontWeight: FontWeight.w900,
-                    color: Colors.black,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      TypewriterAnimatedTextKit(
+                        text: ['Flash Chat'],
+                        speed: Duration(milliseconds: 200),
+                        textStyle: TextStyle(
+                          fontSize: 32.0,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.black,
+                        ),
+                      ),
+                      TypewriterAnimatedTextKit(
+                        text: ['and movies!'],
+                        speed: Duration(milliseconds: 200),
+                        textStyle: TextStyle(
+                          fontSize: 32.0,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -77,14 +97,14 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             SizedBox(
               height: 48.0,
             ),
-            RoundedButton(
+            MainButton(
               title: 'Log in',
               color: Colors.lightBlueAccent,
               onPressed: () {
                 Navigator.pushNamed(context, LoginScreen.id);
               },
             ),
-            RoundedButton(
+            MainButton(
               title: 'Register',
               color: Colors.blueAccent,
               onPressed: () {
