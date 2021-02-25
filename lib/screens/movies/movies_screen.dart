@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/constants.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -136,18 +137,34 @@ class _MoviesScreenState extends State<MoviesScreen> {
                           ),
                         ),
                       )
-                    : RefreshIndicator(
-                        onRefresh: getMovies,
-                        child: ListView.builder(
-                            itemCount: favouritesMovies?.length,
-                            itemBuilder: (context, index) {
-                              var item = favouritesMovies[index];
-                              return MovieTile(
-                                item: item,
-                                isFavourite: true,
-                              );
-                            }),
-                      ),
+                    : ListView.builder(
+                        itemCount: favouritesMovies?.length,
+                        itemBuilder: (context, index) {
+                          var item = favouritesMovies[index];
+                          return Dismissible(
+                            key: Key(item['id'].toString()),
+                            direction: DismissDirection.endToStart,
+                            onDismissed: (direction) {
+                              setState(() {
+                                favouritesMovies.removeAt(index);
+                              });
+                            },
+                            background: Container(
+                              child: Align(
+                                alignment: Alignment(0.7, 0),
+                                child: Icon(
+                                  Icons.delete_forever,
+                                  size: 32,
+                                ),
+                              ),
+                              color: Colors.red,
+                            ),
+                            child: MovieTile(
+                              item: item,
+                              isFavourite: true,
+                            ),
+                          );
+                        }),
               ),
             ],
           ),
