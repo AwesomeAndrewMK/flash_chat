@@ -3,7 +3,6 @@ import 'package:flash_chat_flutter/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flash_chat_flutter/screens/welcome/welcome_screen.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:flash_chat_flutter/components/messages_stream.dart';
 
 final _firestore = FirebaseFirestore.instance;
@@ -47,41 +46,7 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                Alert(
-                  closeFunction: () {},
-                  context: context,
-                  title: 'Are you sure you want to exit?',
-                  type: AlertType.warning,
-                  buttons: [
-                    DialogButton(
-                      child: Text(
-                        "Yes",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                      onPressed: () async {
-                        try {
-                          await _auth.signOut();
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            WelcomeScreen.id,
-                            (route) => false,
-                          );
-                        } catch (e) {
-                          print(e);
-                        }
-                      },
-                      color: Colors.red,
-                    ),
-                    DialogButton(
-                      child: Text(
-                        "No",
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                      onPressed: () => Navigator.pop(context),
-                      color: Colors.blueAccent,
-                    )
-                  ],
-                ).show();
+                _showDialog();
               }),
         ],
         title: Text('⚡️Chat'),
@@ -138,5 +103,39 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _showDialog() async {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Are you sure you want to exit?'),
+            actions: [
+              TextButton(
+                child: Text('Yes'),
+                onPressed: () async {
+                  try {
+                    await _auth.signOut();
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      WelcomeScreen.id,
+                      (route) => false,
+                    );
+                  } catch (e) {
+                    print(e);
+                  }
+                },
+              ),
+              TextButton(
+                child: Text('No'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
   }
 }
