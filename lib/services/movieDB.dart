@@ -1,51 +1,58 @@
 import 'dart:convert';
 import 'package:http/http.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flash_chat_flutter/services/db.dart';
+import 'package:flash_chat_flutter/models/movieDB_item.dart';
 
 class MovieDB {
   String _apiKey = '442f08ed580949109afb21f8d78ec790';
-
-  _storeResponse(Response response) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('movieDBRes', response.body);
-  }
-
-  _getStoredResponse() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('movieDBRes');
-  }
 
   Future getMoviesList() async {
     try {
       Response response = await get(
           'https://api.themoviedb.org/3/movie/upcoming?api_key=$_apiKey');
-      await _storeResponse(response);
+
+      MovieDBItem item =
+          MovieDBItem(name: 'movies', jsonMoviesDBData: response.body);
+
+      await DB.insert(MovieDBItem.table, item);
       return json.decode(response.body)['results'];
     } catch (e) {
       print(e);
 
-      String storedRes = await _getStoredResponse();
-      if (storedRes == null) {
+      List storedData = await DB.query(MovieDBItem.table);
+      var movies =
+          storedData.firstWhere((el) => el['name'] == 'movies', orElse: () {
         return null;
+      });
+
+      if (movies == null) {
+        return [];
       } else {
-        return json.decode(storedRes)['results'];
+        return json.decode(movies['jsonMoviesDBData'])['results'];
       }
     }
   }
 
   storeFavouriteMovies(List favouritesMovies) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('favouritesMovies', json.encode(favouritesMovies));
+    MovieDBItem item = MovieDBItem(
+      name: 'favouritesMovies',
+      jsonMoviesDBData: json.encode(favouritesMovies),
+    );
+
+    await DB.insert(MovieDBItem.table, item);
   }
 
   Future getFavouriteMovies() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String favouritesMovies = prefs.getString('favouritesMovies');
+    List storedData = await DB.query(MovieDBItem.table);
+    var favouritesMovies = storedData
+        .firstWhere((el) => el['name'] == 'favouritesMovies', orElse: () {
+      return null;
+    });
 
     if (favouritesMovies == null) {
       return [];
     } else {
-      return json.decode(favouritesMovies);
+      return json.decode(favouritesMovies['jsonMoviesDBData']);
     }
   }
 }

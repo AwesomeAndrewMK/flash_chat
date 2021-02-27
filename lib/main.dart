@@ -6,9 +6,11 @@ import 'package:flash_chat_flutter/screens/chat/chat_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'screens/movies/movies_screen.dart';
 import 'screens/main/main_screen.dart';
+import 'services/db.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await DB.init();
   await Firebase.initializeApp();
   runApp(FlashChat());
 }
