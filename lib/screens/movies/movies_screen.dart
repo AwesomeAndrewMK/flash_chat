@@ -147,6 +147,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
                             onDismissed: (direction) {
                               setState(() {
                                 favouritesMovies.removeAt(index);
+                                movieDB.storeFavouriteMovies(favouritesMovies);
                               });
                             },
                             background: Container(

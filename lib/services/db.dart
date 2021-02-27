@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'package:flash_chat_flutter/models/moviesData_model.dart';
+import 'package:flash_chat_flutter/models/movies_model.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 abstract class DB {
   static Database _db;
@@ -13,10 +14,13 @@ abstract class DB {
     }
 
     try {
-      String _path = await getDatabasesPath() + 'example';
-      _db = await openDatabase(_path, version: _version, onCreate: onCreate);
-    } catch (ex) {
-      print(ex);
+      _db = await openDatabase(
+        join(await getDatabasesPath(), 'moviesDB'),
+        version: _version,
+        onCreate: onCreate,
+      );
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -26,12 +30,13 @@ abstract class DB {
   static Future<List<Map<String, dynamic>>> query(String table) async =>
       _db.query(table);
 
-  static Future<int> insert(String table, MoviesDataModel model) async =>
+  static Future<int> insert(String table, MoviesModel model) async =>
       await _db.insert(table, model.toMap());
 
-  static Future<int> update(String table, MoviesDataModel model) async => await _db
-      .update(table, model.toMap(), where: 'id = ?', whereArgs: [model.id]);
+  static Future<int> update(String table, MoviesModel model) async =>
+      await _db
+          .update(table, model.toMap(), where: 'id = ?', whereArgs: [model.id]);
 
-  static Future<int> delete(String table, MoviesDataModel model) async =>
+  static Future<int> delete(String table, MoviesModel model) async =>
       await _db.delete(table, where: 'id = ?', whereArgs: [model.id]);
 }

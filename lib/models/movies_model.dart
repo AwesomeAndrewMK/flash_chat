@@ -1,13 +1,11 @@
-import 'moviesData_model.dart';
-
-class MovieDBItem extends MoviesDataModel {
+class MoviesModel {
   static String table = 'movieDB_items';
 
-  int id;
-  String name;
-  String jsonMoviesDBData;
+  final int id;
+  final String name;
+  final String jsonMoviesDBData;
 
-  MovieDBItem({this.id, this.name, this.jsonMoviesDBData});
+  MoviesModel({this.id, this.name, this.jsonMoviesDBData});
 
   Map<String, dynamic> toMap() {
     Map<String, dynamic> map = {
@@ -21,8 +19,8 @@ class MovieDBItem extends MoviesDataModel {
     return map;
   }
 
-  static MovieDBItem fromMap(Map<String, dynamic> map) {
-    return MovieDBItem(
+  static MoviesModel fromMap(Map<String, dynamic> map) {
+    return MoviesModel(
         id: map['id'],
         name: map['name'],
         jsonMoviesDBData: map['jsonMoviesDBData']);

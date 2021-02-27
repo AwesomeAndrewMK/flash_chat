@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:flash_chat_flutter/services/db.dart';
-import 'package:flash_chat_flutter/models/movieDB_item.dart';
+import 'package:flash_chat_flutter/models/movies_model.dart';
 
 class MovieDB {
   String _apiKey = '442f08ed580949109afb21f8d78ec790';
@@ -10,16 +10,16 @@ class MovieDB {
     try {
       Response response = await get(
           'https://api.themoviedb.org/3/movie/upcoming?api_key=$_apiKey');
+      MoviesModel item =
+          MoviesModel(name: 'movies', jsonMoviesDBData: response.body);
 
-      MovieDBItem item =
-          MovieDBItem(name: 'movies', jsonMoviesDBData: response.body);
+      await DB.insert(MoviesModel.table, item);
 
-      await DB.insert(MovieDBItem.table, item);
       return json.decode(response.body)['results'];
     } catch (e) {
       print(e);
 
-      List storedData = await DB.query(MovieDBItem.table);
+      List storedData = await DB.query(MoviesModel.table);
       var movies =
           storedData.firstWhere((el) => el['name'] == 'movies', orElse: () {
         return null;
@@ -34,18 +34,17 @@ class MovieDB {
   }
 
   storeFavouriteMovies(List favouritesMovies) async {
-    MovieDBItem item = MovieDBItem(
+    MoviesModel item = MoviesModel(
       name: 'favouritesMovies',
       jsonMoviesDBData: json.encode(favouritesMovies),
     );
-
-    await DB.insert(MovieDBItem.table, item);
+    await DB.insert(MoviesModel.table, item);
   }
 
   Future getFavouriteMovies() async {
-    List storedData = await DB.query(MovieDBItem.table);
+    List storedData = await DB.query(MoviesModel.table);
     var favouritesMovies = storedData
-        .firstWhere((el) => el['name'] == 'favouritesMovies', orElse: () {
+        .lastWhere((el) => el['name'] == 'favouritesMovies', orElse: () {
       return null;
     });
 
