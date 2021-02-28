@@ -3,11 +3,11 @@ import 'package:collection/collection.dart';
 import 'package:intl/intl.dart';
 
 class HandleMoviesList {
+  final List<dynamic> moviesList;
+
   HandleMoviesList({
     @required this.moviesList,
   });
-
-  final List<dynamic> moviesList;
 
   String _formatDate(String date) {
     DateTime parsedDate = DateTime.parse(date);

@@ -31,12 +31,24 @@ abstract class DB {
       _db.query(table);
 
   static Future<int> insert(String table, MoviesModel model) async =>
-      await _db.insert(table, model.toMap());
+      await _db.insert(
+        table,
+        model.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
 
   static Future<int> update(String table, MoviesModel model) async =>
-      await _db
-          .update(table, model.toMap(), where: 'id = ?', whereArgs: [model.id]);
+      await _db.update(
+        table,
+        model.toMap(),
+        where: 'id = ?',
+        whereArgs: [model.id],
+      );
 
   static Future<int> delete(String table, MoviesModel model) async =>
-      await _db.delete(table, where: 'id = ?', whereArgs: [model.id]);
+      await _db.delete(
+        table,
+        where: 'id = ?',
+        whereArgs: [model.id],
+      );
 }

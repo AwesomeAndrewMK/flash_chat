@@ -5,7 +5,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flash_chat_flutter/services/movieDB.dart';
 import 'components/movie_tile.dart';
 import 'package:flash_chat_flutter/services/handleMoviesList.dart';
-import './components/user_avatar.dart';
+import 'package:flash_chat_flutter/screens/movies//components/user_avatar.dart';
 import 'package:flash_chat_flutter/components/loader.dart';
 
 class MoviesScreen extends StatefulWidget {

@@ -5,19 +5,20 @@ import 'package:flash_chat_flutter/models/movies_model.dart';
 
 class MovieDB {
   String _apiKey = '442f08ed580949109afb21f8d78ec790';
-
-  Future<List> getDB() async {
+  String _url = 'https://api.themoviedb.org/3/movie/upcoming';
+  Future<List> _getDBData() async {
     return await DB.query(MoviesModel.table);
   }
 
   Future getMoviesList() async {
     try {
-      Response response = await get(
-          'https://api.themoviedb.org/3/movie/upcoming?api_key=$_apiKey');
-      MoviesModel item =
-          MoviesModel(name: 'movies', jsonMoviesDBData: response.body);
+      Response response = await get('$_url?api_key=$_apiKey');
+      MoviesModel item = MoviesModel(
+        name: 'movies',
+        jsonMoviesDBData: response.body,
+      );
 
-      List storedData = await getDB();
+      List storedData = await _getDBData();
       if (storedData.any((el) => el['name'] == 'movies')) {
         await DB.update(MoviesModel.table, item);
       } else {
@@ -28,31 +29,28 @@ class MovieDB {
     } catch (e) {
       print(e);
 
-      List storedData = await getDB();
-      var movies =
-          storedData.firstWhere((el) => el['name'] == 'movies', orElse: () {
-        return null;
-      });
+      List dbData = await _getDBData();
 
-      if (movies == null) {
-        return [];
-      } else {
+      if (dbData.any((el) => el['name'] == 'movies')) {
+        Map movies =
+            dbData.firstWhere((el) => el['name'] == 'movies', orElse: () {
+          return null;
+        });
         return json.decode(movies['jsonMoviesDBData'])['results'];
+      } else {
+        return [];
       }
     }
   }
 
   storeFavouriteMovies(List favouritesMovies) async {
-    String jsonMoviesDBData = json.encode(favouritesMovies);
-
+    List dbData = await _getDBData();
     MoviesModel item = MoviesModel(
       name: 'favouritesMovies',
-      jsonMoviesDBData: jsonMoviesDBData,
+      jsonMoviesDBData: json.encode(favouritesMovies),
     );
 
-    List storedData = await getDB();
-    if (storedData.any((el) => el['name'] == 'favouritesMovies')) {
-      // TODO Fix problem with updating favouritesMovies
+    if (dbData.any((el) => el['name'] == 'favouritesMovies')) {
       await DB.update(MoviesModel.table, item);
     } else {
       await DB.insert(MoviesModel.table, item);
@@ -60,16 +58,13 @@ class MovieDB {
   }
 
   Future getFavouriteMovies() async {
-    List storedData = await getDB();
-    var favouritesMovies = storedData
-        .lastWhere((el) => el['name'] == 'favouritesMovies', orElse: () {
-      return null;
-    });
+    List dbData = await _getDBData();
 
-    if (favouritesMovies == null) {
-      return [];
+    if (dbData.any((el) => el['name'] == 'favouritesMovies')) {
+      Map movies = dbData.firstWhere((el) => el['name'] == 'favouritesMovies');
+      return json.decode(movies['jsonMoviesDBData']);
     } else {
-      return json.decode(favouritesMovies['jsonMoviesDBData']);
+      return [];
     }
   }
 }
