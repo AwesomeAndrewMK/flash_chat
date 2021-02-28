@@ -3,7 +3,7 @@ class MoviesModel {
 
   final int id;
   final String name;
-  final String jsonMoviesDBData;
+  String jsonMoviesDBData;
 
   MoviesModel({this.id, this.name, this.jsonMoviesDBData});
 
