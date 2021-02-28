@@ -6,6 +6,10 @@ import 'package:flash_chat_flutter/models/movies_model.dart';
 class MovieDB {
   String _apiKey = '442f08ed580949109afb21f8d78ec790';
 
+  Future<List> getDB() async {
+    return await DB.query(MoviesModel.table);
+  }
+
   Future getMoviesList() async {
     try {
       Response response = await get(
@@ -13,13 +17,18 @@ class MovieDB {
       MoviesModel item =
           MoviesModel(name: 'movies', jsonMoviesDBData: response.body);
 
-      await DB.insert(MoviesModel.table, item);
+      List storedData = await getDB();
+      if (storedData.any((el) => el['name'] == 'movies')) {
+        await DB.update(MoviesModel.table, item);
+      } else {
+        await DB.insert(MoviesModel.table, item);
+      }
 
       return json.decode(response.body)['results'];
     } catch (e) {
       print(e);
 
-      List storedData = await DB.query(MoviesModel.table);
+      List storedData = await getDB();
       var movies =
           storedData.firstWhere((el) => el['name'] == 'movies', orElse: () {
         return null;
@@ -34,15 +43,24 @@ class MovieDB {
   }
 
   storeFavouriteMovies(List favouritesMovies) async {
+    String jsonMoviesDBData = json.encode(favouritesMovies);
+
     MoviesModel item = MoviesModel(
       name: 'favouritesMovies',
-      jsonMoviesDBData: json.encode(favouritesMovies),
+      jsonMoviesDBData: jsonMoviesDBData,
     );
-    await DB.insert(MoviesModel.table, item);
+
+    List storedData = await getDB();
+    if (storedData.any((el) => el['name'] == 'favouritesMovies')) {
+      // TODO Fix problem with updating favouritesMovies
+      await DB.update(MoviesModel.table, item);
+    } else {
+      await DB.insert(MoviesModel.table, item);
+    }
   }
 
   Future getFavouriteMovies() async {
-    List storedData = await DB.query(MoviesModel.table);
+    List storedData = await getDB();
     var favouritesMovies = storedData
         .lastWhere((el) => el['name'] == 'favouritesMovies', orElse: () {
       return null;

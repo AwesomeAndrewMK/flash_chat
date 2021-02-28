@@ -15,7 +15,7 @@ abstract class DB {
 
     try {
       _db = await openDatabase(
-        join(await getDatabasesPath(), 'moviesDB'),
+        join(await getDatabasesPath(), 'movies'),
         version: _version,
         onCreate: onCreate,
       );
