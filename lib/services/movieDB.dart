@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:flash_chat_flutter/services/db.dart';
 import 'package:flash_chat_flutter/models/movies_model.dart';
@@ -11,7 +12,7 @@ class MovieDB {
     return _results.map((item) => MoviesModel.fromMap(item)).toList();
   }
 
-  Future getMoviesList() async {
+  Future getMoviesList(VoidCallback errorFunction) async {
     try {
       Response response = await get('$_url?api_key=$_apiKey');
       List<MoviesModel> dbData = await _getDBData();
@@ -31,6 +32,7 @@ class MovieDB {
       return json.decode(response.body)['results'];
     } catch (e) {
       print(e);
+      errorFunction();
 
       List<MoviesModel> dbData = await _getDBData();
 

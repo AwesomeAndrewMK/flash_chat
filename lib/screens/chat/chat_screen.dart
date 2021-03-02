@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flash_chat_flutter/screens/welcome/welcome_screen.dart';
 import 'package:flash_chat_flutter/components/messages_stream.dart';
+import 'package:flash_chat_flutter/components/app_exit_alert_dialog.dart';
 
 final _firestore = FirebaseFirestore.instance;
 User loggedInUser;
@@ -110,31 +111,19 @@ class _ChatScreenState extends State<ChatScreen> {
         context: context,
         barrierDismissible: false,
         builder: (context) {
-          return AlertDialog(
-            title: Text('Are you sure you want to exit?'),
-            actions: [
-              TextButton(
-                child: Text('Yes'),
-                onPressed: () async {
-                  try {
-                    await _auth.signOut();
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      WelcomeScreen.id,
-                      (route) => false,
-                    );
-                  } catch (e) {
-                    print(e);
-                  }
-                },
-              ),
-              TextButton(
-                child: Text('No'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
+          return AppExitAlertDialog(
+            onExitPress: () async {
+              try {
+                await _auth.signOut();
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  WelcomeScreen.id,
+                  (route) => false,
+                );
+              } catch (e) {
+                print(e);
+              }
+            },
           );
         });
   }

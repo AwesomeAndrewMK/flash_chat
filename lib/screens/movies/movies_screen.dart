@@ -95,40 +95,52 @@ class _MoviesScreenState extends State<MoviesScreen> {
                               }
 
                               return Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.fromLTRB(8, 24, 8, 8),
-                                      child: Text(
-                                        item,
+                                child: movies.isEmpty
+                                    ? Center(
+                                        child: Text(
+                                        'No movies? REALLY?!',
                                         style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
                                         ),
+                                      ))
+                                    : Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.fromLTRB(
+                                                8, 24, 8, 8),
+                                            child: Text(
+                                              item,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                          Column(
+                                            children: movies[item]
+                                                .map<Widget>(
+                                                  (movie) => MovieTile(
+                                                      item: movie,
+                                                      isItemInFavourites:
+                                                          isItemInFavourites(
+                                                              movie),
+                                                      onAddToFavourites: () {
+                                                        onAddToFavourites(
+                                                            movie);
+                                                      }),
+                                                )
+                                                .toList(),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    Column(
-                                      children: movies[item]
-                                          .map<Widget>(
-                                            (movie) => MovieTile(
-                                                item: movie,
-                                                isItemInFavourites:
-                                                    isItemInFavourites(movie),
-                                                onAddToFavourites: () {
-                                                  onAddToFavourites(movie);
-                                                }),
-                                          )
-                                          .toList(),
-                                    ),
-                                  ],
-                                ),
                               );
                             }),
                       ),
               ),
               Tab(
-                child: favouritesMovies.length == 0
+                child: favouritesMovies.isEmpty
                     ? Center(
                         child: Text(
                           'No favourite movies here!',
@@ -175,7 +187,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
   }
 
   Future getMovies() async {
-    List<dynamic> res = await movieDB.getMoviesList();
+    List<dynamic> res = await movieDB.getMoviesList(showErrorSnackBar);
     HandleMoviesList groupedMovies = HandleMoviesList(moviesList: res);
     setState(() {
       movies = groupedMovies.getGroupedMovies();
@@ -199,5 +211,16 @@ class _MoviesScreenState extends State<MoviesScreen> {
     setState(() {
       _avatar = userData['picture']['data']['url'];
     });
+  }
+
+  void showErrorSnackBar() {
+    final snackBar = SnackBar(
+      content: Text(
+        'Oops, data loading error! Please check your internet connection or try later.',
+      ),
+      backgroundColor: Colors.red,
+    );
+
+    Scaffold.of(context).showSnackBar(snackBar);
   }
 }
