@@ -18,7 +18,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String email;
   String password;
-  String errorMessage;
 
   bool _showSpinner = false;
 
@@ -92,7 +91,10 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               MainButton(
                 title: 'Log in',
-                color: Colors.lightBlueAccent,
+                boxDecoration: BoxDecoration(
+                  color: Colors.lightBlueAccent,
+                  borderRadius: BorderRadius.circular(24),
+                ),
                 onPressed: () async {
                   setState(() {
                     _showSpinner = true;
@@ -114,36 +116,26 @@ class _LoginScreenState extends State<LoginScreen> {
                       _showSpinner = false;
                     });
                   } catch (e) {
+                    final snackBar = SnackBar(
+                      content: Text(e.toString()),
+                      backgroundColor: Colors.red,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     setState(() {
-                      errorMessage = e.toString();
                       _showSpinner = false;
                     });
                   }
                 },
               ),
-              errorMessage != null
-                  ? Text(
-                      errorMessage,
-                      style: TextStyle(
-                        color: Colors.red,
-                      ),
-                    )
-                  : Container(),
-              GestureDetector(
-                onTap: signInWithFacebook,
-                child: Container(
+              SizedBox(
+                height: 16,
+              ),
+              MainButton(
+                title: 'CONTINUE WITH FACEBOOK',
+                onPressed: signInWithFacebook,
+                boxDecoration: BoxDecoration(
                   color: Colors.blueAccent,
-                  child: Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Text(
-                      'CONTINUE WITH FACEBOOK',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                  borderRadius: BorderRadius.circular(24),
                 ),
               ),
             ],

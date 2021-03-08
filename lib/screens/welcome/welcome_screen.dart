@@ -104,6 +104,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 Navigator.pushNamed(context, LoginScreen.id);
               },
             ),
+            SizedBox(
+              height: 16,
+            ),
             MainButton(
               title: 'Register',
               color: Colors.blueAccent,

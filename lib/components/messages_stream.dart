@@ -31,7 +31,7 @@ class MessagesStream extends StatelessWidget {
           final currentUser = email;
 
           MessageBubble messageBubble = MessageBubble(
-            text: messageText,
+            text: messageText ?? '',
             sender: messageSender,
             isMe: currentUser == messageSender,
           );

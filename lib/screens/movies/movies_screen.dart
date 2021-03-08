@@ -7,6 +7,11 @@ import 'components/movie_tile.dart';
 import 'package:flash_chat_flutter/services/handleMoviesList.dart';
 import 'package:flash_chat_flutter/screens/movies//components/user_avatar.dart';
 import 'package:flash_chat_flutter/components/loader.dart';
+import 'package:flash_chat_flutter/screens/welcome/welcome_screen.dart';
+import 'package:flash_chat_flutter/components/app_exit_alert_dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flash_chat_flutter/screens/movie_screen/movie_screen.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 
 class MoviesScreen extends StatefulWidget {
   static const String id = 'movies_screen';
@@ -15,6 +20,7 @@ class MoviesScreen extends StatefulWidget {
 }
 
 class _MoviesScreenState extends State<MoviesScreen> {
+  final _auth = FirebaseAuth.instance;
   MovieDB movieDB = MovieDB();
 
   String _avatar;
@@ -33,13 +39,19 @@ class _MoviesScreenState extends State<MoviesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DefaultTabController(
+    return Container(
+      child: DefaultTabController(
         length: 2,
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: mainAppColor,
-            actions: [UserAvatar(avatar: _avatar)],
+            actions: [
+              UserAvatar(avatar: _avatar),
+              IconButton(
+                icon: Icon(Icons.close),
+                onPressed: _logOut,
+              ),
+            ],
             bottom: TabBar(
               indicatorColor: Colors.yellow,
               tabs: [
@@ -94,48 +106,41 @@ class _MoviesScreenState extends State<MoviesScreen> {
                                 }
                               }
 
-                              return Container(
-                                child: movies.isEmpty
-                                    ? Center(
-                                        child: Text(
-                                        'No movies? REALLY?!',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                        ),
-                                      ))
-                                    : Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.fromLTRB(
-                                                8, 24, 8, 8),
-                                            child: Text(
-                                              item,
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                          Column(
-                                            children: movies[item]
-                                                .map<Widget>(
-                                                  (movie) => MovieTile(
-                                                      item: movie,
-                                                      isItemInFavourites:
-                                                          isItemInFavourites(
-                                                              movie),
-                                                      onAddToFavourites: () {
-                                                        onAddToFavourites(
-                                                            movie);
-                                                      }),
-                                                )
-                                                .toList(),
-                                          ),
-                                        ],
+                              return StickyHeader(
+                                  header: Padding(
+                                    padding: EdgeInsets.fromLTRB(8, 24, 8, 8),
+                                    child: Text(
+                                      item,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                              );
+                                    ),
+                                  ),
+                                  content: Column(
+                                    children: movies[item]
+                                        .map<Widget>(
+                                          (movie) => MovieTile(
+                                              onMovieTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) {
+                                                      return MovieScreen(movie);
+                                                    },
+                                                    fullscreenDialog: true,
+                                                  ),
+                                                );
+                                              },
+                                              item: movie,
+                                              isItemInFavourites:
+                                                  isItemInFavourites(movie),
+                                              onAddToFavourites: () {
+                                                onAddToFavourites(movie);
+                                              }),
+                                        )
+                                        .toList(),
+                                  ));
                             }),
                       ),
               ),
@@ -175,6 +180,17 @@ class _MoviesScreenState extends State<MoviesScreen> {
                             child: MovieTile(
                               item: item,
                               isFavourite: true,
+                              onMovieTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return MovieScreen(item);
+                                    },
+                                    fullscreenDialog: true,
+                                  ),
+                                );
+                              },
                             ),
                           );
                         }),
@@ -221,6 +237,29 @@ class _MoviesScreenState extends State<MoviesScreen> {
       backgroundColor: Colors.red,
     );
 
-    Scaffold.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  Future<bool> _logOut() async {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AppExitAlertDialog(
+                onExitPress: () async {
+                  try {
+                    await _auth.signOut();
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      WelcomeScreen.id,
+                      (route) => false,
+                    );
+                  } catch (e) {
+                    print(e);
+                  }
+                },
+              ) ??
+              false;
+        });
   }
 }

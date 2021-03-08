@@ -9,10 +9,12 @@ class MovieTile extends StatelessWidget {
     this.isFavourite,
     this.isItemInFavourites,
     this.movieId,
+    this.onMovieTap,
   });
 
   final dynamic item;
   final VoidCallback onAddToFavourites;
+  final VoidCallback onMovieTap;
   final bool isFavourite;
   final bool isItemInFavourites;
   final int movieId;
@@ -35,37 +37,58 @@ class MovieTile extends StatelessWidget {
               children: [
                 Padding(
                   padding: EdgeInsets.only(right: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image(
-                        image: NetworkImage(
-                          'https://image.tmdb.org/t/p/w500/${item['backdrop_path']}',
+                  child: GestureDetector(
+                    onTap: onMovieTap,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Image(
+                          image: NetworkImage(
+                            'https://image.tmdb.org/t/p/w500/${item['backdrop_path']}',
+                          ),
+                          fit: BoxFit.cover,
+                          width: 50,
+                          height: 50,
                         ),
-                        fit: BoxFit.cover,
-                        width: 50,
-                        height: 50,
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text(item['vote_average'].toString()),
-                    ],
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text(item['vote_average'].toString()),
+                      ],
+                    ),
                   ),
                 ),
                 Flexible(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        item['title'].toString(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                      GestureDetector(
+                        onTap: onMovieTap,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item['title'].toString(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Anton',
+                                fontSize: 24,
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              item['overview'].toString(),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontFamily: 'Rajdhani',
+                                fontSize: 18,
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                          ],
                         ),
                       ),
-                      SizedBox(height: 8),
-                      Text(item['overview'].toString()),
-                      SizedBox(height: 8),
                       Container(
                         child: isFavourite == true
                             ? Column()

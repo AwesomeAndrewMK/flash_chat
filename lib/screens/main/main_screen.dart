@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../movies/movies_screen.dart';
 import '../chat/chat_screen.dart';
+import 'package:flash_chat_flutter/screens/welcome/welcome_screen.dart';
+import 'package:flash_chat_flutter/components/app_exit_alert_dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class MainScreen extends StatefulWidget {
   static const String id = 'main_screen';
@@ -9,6 +12,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  final _auth = FirebaseAuth.instance;
   int _selectedIndex = 0;
   void _onItemTapped(int index) {
     setState(() {
@@ -23,8 +27,9 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return WillPopScope(
+      onWillPop: _logOut,
+      child: Scaffold(
         body: _widgetOptions.elementAt(_selectedIndex),
         bottomNavigationBar: BottomNavigationBar(
           showSelectedLabels: false,
@@ -45,5 +50,28 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
+  }
+
+  Future<bool> _logOut() async {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AppExitAlertDialog(
+                onExitPress: () async {
+                  try {
+                    await _auth.signOut();
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      WelcomeScreen.id,
+                      (route) => false,
+                    );
+                  } catch (e) {
+                    print(e);
+                  }
+                },
+              ) ??
+              false;
+        });
   }
 }
