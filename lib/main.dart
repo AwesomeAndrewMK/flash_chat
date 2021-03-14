@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flash_chat_flutter/screens/welcome/welcome_screen.dart';
-import 'package:flash_chat_flutter/screens/login/login_screen.dart';
-import 'package:flash_chat_flutter/screens/registration/registration_screen.dart';
-import 'package:flash_chat_flutter/screens/chat/chat_screen.dart';
+import 'package:flash_chat_flutter/presentation/screens/welcome/welcome_screen.dart';
+import 'package:flash_chat_flutter/presentation/screens/login/login_screen.dart';
+import 'package:flash_chat_flutter/presentation/screens/registration/registration_screen.dart';
+import 'package:flash_chat_flutter/presentation/screens/chat/chat_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'screens/movies/movies_screen.dart';
-import 'screens/main/main_screen.dart';
-import 'services/db.dart';
+import 'package:flash_chat_flutter/presentation/screens/movies/movies_screen.dart';
+import 'package:flash_chat_flutter/presentation/screens/main/main_screen.dart';
+import 'package:flash_chat_flutter/data/services/db.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +29,7 @@ class FlashChat extends StatelessWidget {
         MoviesScreen.id: (context) => MoviesScreen(),
         MainScreen.id: (context) => MainScreen(),
       },
+      builder: EasyLoading.init(),
     );
   }
 }
