@@ -3,6 +3,7 @@ import 'package:flash_chat_flutter/common/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flash_chat_flutter/presentation/widgets/widgets.dart';
+import 'package:flash_chat_flutter/generated/l10n.dart';
 
 final _firestore = FirebaseFirestore.instance;
 late User loggedInUser;
@@ -38,6 +39,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = S.of(context);
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0,
@@ -66,7 +69,9 @@ class _ChatScreenState extends State<ChatScreen> {
                           messageText = value;
                         });
                       },
-                      decoration: kMessageTextFieldDecoration,
+                      decoration: kMessageTextFieldDecoration.copyWith(
+                        hintText: t.messagePlaceholder,
+                      ),
                     ),
                   ),
                   TextButton(
@@ -85,7 +90,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       }
                     },
                     child: Text(
-                      'Send',
+                      t.send,
                       style: messageText.isNotEmpty
                           ? kSendButtonTextStyle
                           : kInactiveSendButtonTextStyle,

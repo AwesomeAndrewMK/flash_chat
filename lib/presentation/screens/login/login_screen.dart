@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flash_chat_flutter/presentation/screens/screens.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flash_chat_flutter/generated/l10n.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -23,13 +24,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = S.of(context);
+
     Future<void> signInWithFacebook() async {
       setState(() {
         isLoading = true;
       });
       FocusScope.of(context).unfocus();
       try {
-        await EasyLoading.show(status: 'loading...');
+        await EasyLoading.show(status: t.loading);
         final accessToken = await FacebookAuth.instance.login();
         final facebookAuthCredential =
             FacebookAuthProvider.credential(accessToken?.token ?? '');
@@ -83,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   });
                 },
                 decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Enter your email',
+                  hintText: t.emailPlaceholder,
                 ),
               ),
               SizedBox(
@@ -99,14 +102,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   });
                 },
                 decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Enter your password',
+                  hintText: t.passwordPlaceholder,
                 ),
               ),
               SizedBox(
                 height: 24.0,
               ),
               MainButton(
-                title: 'Log in',
+                title: t.logIn,
                 boxDecoration: BoxDecoration(
                   color: Colors.lightBlueAccent,
                   borderRadius: BorderRadius.circular(24),
@@ -117,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     isLoading = true;
                   });
                   try {
-                    await EasyLoading.show(status: 'loading...');
+                    await EasyLoading.show(status: t.loading);
                     await _auth.signInWithEmailAndPassword(
                       email: email,
                       password: password,
@@ -148,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 16,
               ),
               MainButton(
-                title: 'CONTINUE WITH FACEBOOK',
+                title: t.facebookLogin.toUpperCase(),
                 onPressed: signInWithFacebook,
                 boxDecoration: BoxDecoration(
                   color: Colors.blueAccent,

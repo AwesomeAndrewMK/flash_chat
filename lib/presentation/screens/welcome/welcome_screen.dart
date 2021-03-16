@@ -4,6 +4,7 @@ import '../registration/registration_screen.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flash_chat_flutter/presentation/widgets/widgets.dart';
 import 'package:flash_chat_flutter/common/constants/constants.dart';
+import 'package:flash_chat_flutter/generated/l10n.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static const String id = 'welcome_screen';
@@ -47,6 +48,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    final t = S.of(context);
+
     return Scaffold(
       backgroundColor: animation.value,
       appBar: AppBar(
@@ -73,12 +76,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       TypewriterAnimatedTextKit(
-                        text: ['Flash Chat'],
+                        text: [t.appTitle],
                         speed: Duration(milliseconds: 200),
                         textStyle: font_logo,
                       ),
                       TypewriterAnimatedTextKit(
-                        text: ['and movies!'],
+                        text: [t.appAdditionalTitle],
                         speed: Duration(milliseconds: 200),
                         textStyle: font_logo,
                       ),
@@ -91,7 +94,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               height: 48.0,
             ),
             MainButton(
-              title: 'Log in',
+              title: t.logIn,
               color: Colors.lightBlueAccent,
               onPressed: () {
                 Navigator.pushNamed(context, LoginScreen.id);
@@ -101,11 +104,37 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               height: 16,
             ),
             MainButton(
-              title: 'Register',
+              title: t.register,
               color: Colors.blueAccent,
               onPressed: () {
                 Navigator.pushNamed(context, RegistrationScreen.id);
               },
+            ),
+            SizedBox(height: 30),
+            Center(
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    S.load(Locale('en', 'US'));
+                  });
+                },
+                child: Text(
+                  'English',
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            Center(
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    S.load(Locale('ru', 'RU'));
+                  });
+                },
+                child: Text(
+                  'Русский',
+                ),
+              ),
             ),
           ],
         ),

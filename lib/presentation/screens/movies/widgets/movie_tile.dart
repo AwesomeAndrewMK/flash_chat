@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/common/constants/constants.dart';
 import 'package:share/share.dart';
+import 'package:flash_chat_flutter/generated/l10n.dart';
 
 class MovieTile extends StatelessWidget {
   MovieTile({
@@ -21,6 +22,8 @@ class MovieTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = S.of(context);
+
     return ListTile(
       contentPadding: EdgeInsets.all(8),
       title: PhysicalModel(
@@ -99,8 +102,8 @@ class MovieTile extends StatelessWidget {
                                         onTap: () => onAddToFavourites!(),
                                         child: Text(
                                           isItemInFavourites == true
-                                              ? 'IN FAVOURITES'
-                                              : 'ADD TO FAVOURITES',
+                                              ? t.inFavourites.toUpperCase()
+                                              : t.addToFavourites.toUpperCase(),
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: isItemInFavourites == true
@@ -115,7 +118,7 @@ class MovieTile extends StatelessWidget {
                                               'https://www.themoviedb.org/movie/$movieId');
                                         },
                                         child: Text(
-                                          'SHARE',
+                                          t.share.toUpperCase(),
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: mainAppColor,

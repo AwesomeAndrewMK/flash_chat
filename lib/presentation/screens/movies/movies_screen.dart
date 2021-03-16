@@ -9,6 +9,7 @@ import 'package:flash_chat_flutter/presentation/widgets/widgets.dart';
 import 'package:flash_chat_flutter/presentation/screens/screens.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:flash_chat_flutter/generated/l10n.dart';
 
 class MoviesScreen extends StatefulWidget {
   static const String id = 'movies_screen';
@@ -35,6 +36,8 @@ class _MoviesScreenState extends State<MoviesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = S.of(context);
+
     return Container(
       child: DefaultTabController(
         length: 2,
@@ -52,10 +55,10 @@ class _MoviesScreenState extends State<MoviesScreen> {
               indicatorColor: Colors.yellow,
               tabs: [
                 Tab(
-                  child: Text('FILMS'),
+                  child: Text(t.films.toUpperCase()),
                 ),
                 Tab(
-                  child: Text('FAVOURITES'),
+                  child: Text(t.favourites.toUpperCase()),
                 ),
               ],
             ),
@@ -145,7 +148,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
                 child: favouritesMovies.isEmpty
                     ? Center(
                         child: Text(
-                          'No favourite movies here!',
+                          t.noFavourites,
                           style: font_title,
                         ),
                       )

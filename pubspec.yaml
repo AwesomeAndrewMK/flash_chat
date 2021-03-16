@@ -11,6 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   cupertino_icons: ^1.0.0
   animated_text_kit: ^4.0.0
@@ -43,3 +45,5 @@ flutter:
     - family: Rajdhani
       fonts:
         - asset: fonts/Rajdhani-Regular.ttf
+flutter_intl:
+  enabled: true

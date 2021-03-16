@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/common/constants/constants.dart';
+import 'package:flash_chat_flutter/generated/l10n.dart';
 
 class MovieScreen extends StatefulWidget {
   static String id = 'movie_screen';
@@ -13,6 +14,8 @@ class MovieScreen extends StatefulWidget {
 class _MovieScreenState extends State<MovieScreen> {
   @override
   Widget build(BuildContext context) {
+    final t = S.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.item['title'].toString()),
@@ -38,7 +41,7 @@ class _MovieScreenState extends State<MovieScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Name: ',
+                    t.name + ': ',
                     style: font_large_bold,
                   ),
                   Expanded(
@@ -53,7 +56,7 @@ class _MovieScreenState extends State<MovieScreen> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    'Average score: ',
+                    t.averageScore + ': ',
                     style: font_large_bold,
                   ),
                   Text(
@@ -63,7 +66,7 @@ class _MovieScreenState extends State<MovieScreen> {
                 ],
               ),
               Text(
-                'Description:',
+                t.description + ':',
                 style: font_large_bold,
               ),
               Text(

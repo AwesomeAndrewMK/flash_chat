@@ -4,6 +4,7 @@ import 'package:flash_chat_flutter/presentation/screens/screens.dart';
 import 'package:flash_chat_flutter/common/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flash_chat_flutter/generated/l10n.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static const String id = 'registration_screen';
@@ -22,6 +23,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = S.of(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Padding(
@@ -54,7 +57,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   });
                 },
                 decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Enter your email',
+                  hintText: t.emailPlaceholder,
                 ),
               ),
               SizedBox(
@@ -70,14 +73,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   });
                 },
                 decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Enter your password',
+                  hintText: t.passwordPlaceholder,
                 ),
               ),
               SizedBox(
                 height: 24.0,
               ),
               MainButton(
-                title: 'Register',
+                title: t.register,
                 color: Colors.blueAccent,
                 onPressed: () async {
                   FocusScope.of(context).unfocus();
@@ -85,7 +88,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     isLoading = true;
                   });
                   try {
-                    await EasyLoading.show(status: 'loading...');
+                    await EasyLoading.show(status: t.loading);
                     await _auth.createUserWithEmailAndPassword(
                       email: email,
                       password: password,
