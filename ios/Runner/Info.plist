@@ -11,6 +11,11 @@
       </array>
       </dict>
     </array>
+    <key>CFBundleLocalizations</key>
+    <array>
+        <string>en</string>
+        <string>ru_RU</string>
+    </array>
     <key>FacebookAppID</key>
     <string>1121656511579445</string>
     <key>FacebookDisplayName</key>
