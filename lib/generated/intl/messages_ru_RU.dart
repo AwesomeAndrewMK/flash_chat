@@ -33,16 +33,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "fetchError" : MessageLookupByLibrary.simpleMessage("Упс, ошибка загрузки! Проверьте ваше интернет соединение или попробуйте позже."),
     "films" : MessageLookupByLibrary.simpleMessage("Фильмы"),
     "inFavourites" : MessageLookupByLibrary.simpleMessage("В избранном"),
+    "language" : MessageLookupByLibrary.simpleMessage("Язык"),
     "loading" : MessageLookupByLibrary.simpleMessage("Загрузка..."),
     "logIn" : MessageLookupByLibrary.simpleMessage("Вход"),
     "messagePlaceholder" : MessageLookupByLibrary.simpleMessage("Введите ваше сообщение здесь..."),
     "name" : MessageLookupByLibrary.simpleMessage("Имя"),
+    "nameInputPlaceholder" : MessageLookupByLibrary.simpleMessage("Введите ваше имя..."),
     "no" : MessageLookupByLibrary.simpleMessage("Нет"),
     "noFavourites" : MessageLookupByLibrary.simpleMessage("Нет избранных фильмов!"),
     "passwordPlaceholder" : MessageLookupByLibrary.simpleMessage("Введите ваш пароль"),
+    "practice" : MessageLookupByLibrary.simpleMessage("практика"),
     "register" : MessageLookupByLibrary.simpleMessage("Регистрация"),
     "send" : MessageLookupByLibrary.simpleMessage("Отправить"),
+    "settings" : MessageLookupByLibrary.simpleMessage("Настройки"),
     "share" : MessageLookupByLibrary.simpleMessage("Поделиться"),
-    "yes" : MessageLookupByLibrary.simpleMessage("Да")
+    "welcome" : MessageLookupByLibrary.simpleMessage("Добро пожаловать"),
+    "yes" : MessageLookupByLibrary.simpleMessage("Да"),
+    "yourName" : MessageLookupByLibrary.simpleMessage("Ваше имя")
   };
 }

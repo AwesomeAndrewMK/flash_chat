@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import '../login/login_screen.dart';
-import '../registration/registration_screen.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flash_chat_flutter/presentation/widgets/widgets.dart';
 import 'package:flash_chat_flutter/common/constants/constants.dart';
 import 'package:flash_chat_flutter/generated/l10n.dart';
+import 'package:flash_chat_flutter/presentation/screens/screens.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static const String id = 'welcome_screen';
@@ -111,30 +110,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               },
             ),
             SizedBox(height: 30),
-            Center(
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    S.load(Locale('en', 'US'));
-                  });
-                },
-                child: Text(
-                  'English',
-                ),
-              ),
-            ),
-            SizedBox(height: 10),
-            Center(
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    S.load(Locale('ru', 'RU'));
-                  });
-                },
-                child: Text(
-                  'Русский',
-                ),
-              ),
+            MainButton(
+              title: t.settings,
+              color: Colors.blueGrey,
+              onPressed: () {
+                Navigator.pushNamed(context, SettingsScreen.id);
+              },
             ),
           ],
         ),

@@ -33,16 +33,22 @@ class MessageLookup extends MessageLookupByLibrary {
     "fetchError" : MessageLookupByLibrary.simpleMessage("Oops, data loading error! Please check your internet connection or try later."),
     "films" : MessageLookupByLibrary.simpleMessage("Films"),
     "inFavourites" : MessageLookupByLibrary.simpleMessage("In favourites"),
+    "language" : MessageLookupByLibrary.simpleMessage("Language"),
     "loading" : MessageLookupByLibrary.simpleMessage("Loading..."),
     "logIn" : MessageLookupByLibrary.simpleMessage("Log in"),
     "messagePlaceholder" : MessageLookupByLibrary.simpleMessage("Type your message here..."),
     "name" : MessageLookupByLibrary.simpleMessage("Name"),
+    "nameInputPlaceholder" : MessageLookupByLibrary.simpleMessage("Enter your name..."),
     "no" : MessageLookupByLibrary.simpleMessage("No"),
     "noFavourites" : MessageLookupByLibrary.simpleMessage("No favourite movies here!"),
     "passwordPlaceholder" : MessageLookupByLibrary.simpleMessage("Enter your password"),
+    "practice" : MessageLookupByLibrary.simpleMessage("practice"),
     "register" : MessageLookupByLibrary.simpleMessage("Register"),
     "send" : MessageLookupByLibrary.simpleMessage("Send"),
+    "settings" : MessageLookupByLibrary.simpleMessage("Settings"),
     "share" : MessageLookupByLibrary.simpleMessage("Share"),
-    "yes" : MessageLookupByLibrary.simpleMessage("Yes")
+    "welcome" : MessageLookupByLibrary.simpleMessage("Welcome"),
+    "yes" : MessageLookupByLibrary.simpleMessage("Yes"),
+    "yourName" : MessageLookupByLibrary.simpleMessage("Your name")
   };
 }

@@ -5,3 +5,4 @@ export 'movie_screen/movie_screen.dart';
 export 'movies/movies_screen.dart';
 export 'registration/registration_screen.dart';
 export 'welcome/welcome_screen.dart';
+export 'settings/settings_screen.dart';

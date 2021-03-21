@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io';
+import 'package:flash_chat_flutter/generated/l10n.dart';
 
 class AppExitAlertDialog extends StatelessWidget {
   final VoidCallback onExitPress;
@@ -13,34 +14,36 @@ class AppExitAlertDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = S.of(context);
+
     return _isPlatformIOS()
         ? CupertinoAlertDialog(
-            title: Text('Are you sure you want to exit?'),
+            title: Text(t.exitMessage),
             actions: [
               CupertinoDialogAction(
                 onPressed: onExitPress,
-                child: Text('Yes'),
+                child: Text(t.yes),
               ),
               CupertinoDialogAction(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('No'),
+                child: Text(t.no),
               )
             ],
           )
         : AlertDialog(
-            title: Text('Are you sure you want to exit?'),
+            title: Text(t.exitMessage),
             actions: [
               TextButton(
                 onPressed: onExitPress,
-                child: Text('Yes'),
+                child: Text(t.yes),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('No'),
+                child: Text(t.no),
               ),
             ],
           );
