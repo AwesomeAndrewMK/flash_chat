@@ -44,7 +44,6 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0,
-        backgroundColor: mainAppColor,
       ),
       body: SafeArea(
         child: Column(

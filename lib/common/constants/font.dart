@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 const font_small = TextStyle(
   fontSize: 12,
-  color: Colors.black54,
 );
 
 const font_medium = TextStyle(

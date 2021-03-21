@@ -43,7 +43,6 @@ class _MoviesScreenState extends State<MoviesScreen> {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: mainAppColor,
             actions: [
               UserAvatar(_avatar),
               IconButton(
@@ -83,6 +82,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
                           },
                           groupBy: (dynamic item) =>
                               formatDate(item['release_date']),
+                          stickyHeaderBackgroundColor: Colors.transparent,
                           groupSeparatorBuilder: (String val) {
                             return Padding(
                               padding: EdgeInsets.fromLTRB(8, 24, 8, 8),
