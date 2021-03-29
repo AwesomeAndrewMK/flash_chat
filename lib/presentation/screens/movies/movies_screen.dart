@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/common/constants/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:flash_chat_flutter/data/services/movieDB.dart';
+import 'package:flash_chat_flutter/data/services/movie_db.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'widgets/widgets.dart';
 import 'package:flash_chat_flutter/presentation/widgets/widgets.dart';
@@ -54,11 +54,11 @@ class _MoviesScreenState extends State<MoviesScreen> {
                       child: value
                           ? Icon(
                               Icons.nightlight_round,
-                              color: Colors.white,
+                              color: ProjectCodeColors.WHITE_COLOR,
                             )
                           : Icon(
                               Icons.wb_sunny,
-                              color: Colors.yellow,
+                              color: ProjectCodeColors.YELLOW_COLOR,
                             ),
                     );
                   },
@@ -73,7 +73,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
               ),
             ],
             bottom: TabBar(
-              indicatorColor: Colors.yellow,
+              indicatorColor: ProjectCodeColors.YELLOW_COLOR,
               tabs: [
                 Tab(
                   child: Text(t.films.toUpperCase()),
@@ -91,7 +91,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
                     ? Loader()
                     : RefreshIndicator(
                         onRefresh: getMovies,
-                        color: mainAppColor,
+                        color: ProjectCodeColors.MAIN_COLOR,
                         child: GroupedListView(
                           elements: movies,
                           useStickyGroupSeparators: true,
@@ -110,7 +110,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
                               padding: EdgeInsets.fromLTRB(8, 24, 8, 8),
                               child: Text(
                                 Jiffy(val).format('MMM y').toUpperCase(),
-                                style: font_medium_bold,
+                                style: Fonts.FONT_MEDIUM_BOLD,
                               ),
                             );
                           },
@@ -171,7 +171,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
                     ? Center(
                         child: Text(
                           t.noFavourites,
-                          style: font_title,
+                          style: Fonts.FONT_TITLE,
                         ),
                       )
                     : ListView.builder(
@@ -188,7 +188,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
                               });
                             },
                             background: Container(
-                              color: Colors.red,
+                              color: ProjectCodeColors.RED_COLOR,
                               child: Align(
                                 alignment: Alignment(0.7, 0),
                                 child: Icon(
@@ -256,7 +256,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
       content: Text(
         'Oops, data loading error! Please check your internet connection or try later.',
       ),
-      backgroundColor: Colors.red,
+      backgroundColor: ProjectCodeColors.RED_COLOR,
     );
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);

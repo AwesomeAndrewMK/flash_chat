@@ -3,7 +3,7 @@ import 'package:flash_chat_flutter/common/constants/constants.dart';
 import 'package:flash_chat_flutter/generated/l10n.dart';
 
 class MovieScreen extends StatefulWidget {
-  static String id = 'movie_screen';
+  static String id = 'movie';
   MovieScreen(this.item);
   final Map item;
 
@@ -41,12 +41,12 @@ class _MovieScreenState extends State<MovieScreen> {
                 children: [
                   Text(
                     t.name + ': ',
-                    style: font_large_bold,
+                    style: Fonts.FONT_LARGE,
                   ),
                   Expanded(
                     child: Text(
                       widget.item['title'].toString(),
-                      style: font_large,
+                      style: Fonts.FONT_LARGE,
                     ),
                   ),
                 ],
@@ -56,21 +56,21 @@ class _MovieScreenState extends State<MovieScreen> {
                 children: [
                   Text(
                     t.averageScore + ': ',
-                    style: font_large_bold,
+                    style: Fonts.FONT_LARGE_BOLD,
                   ),
                   Text(
                     widget.item['vote_average'].toString(),
-                    style: font_large,
+                    style: Fonts.FONT_LARGE,
                   ),
                 ],
               ),
               Text(
                 t.description + ':',
-                style: font_large_bold,
+                style: Fonts.FONT_LARGE_BOLD,
               ),
               Text(
                 widget.item['overview'].toString(),
-                style: font_medium,
+                style: Fonts.FONT_MEDIUM,
               ),
               SizedBox(
                 height: 16,

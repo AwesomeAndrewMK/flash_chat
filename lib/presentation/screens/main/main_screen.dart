@@ -4,6 +4,7 @@ import '../chat/chat_screen.dart';
 import 'package:flash_chat_flutter/presentation/screens/screens.dart';
 import 'package:flash_chat_flutter/presentation/widgets/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flash_chat_flutter/common/constants/constants.dart';
 
 class MainScreen extends StatefulWidget {
   static const String id = 'main_screen';
@@ -45,7 +46,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ],
           currentIndex: _selectedIndex,
-          selectedItemColor: Color(0xFF009488),
+          selectedItemColor: ProjectCodeColors.MAIN_COLOR,
           onTap: _onItemTapped,
         ),
       ),

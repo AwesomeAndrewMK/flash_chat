@@ -84,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     email = value;
                   });
                 },
-                decoration: kTextFieldDecoration.copyWith(
+                decoration: AppDecoration.TEXT_FIELD_DECORATION.copyWith(
                   hintText: t.emailPlaceholder,
                 ),
               ),
@@ -100,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     password = value;
                   });
                 },
-                decoration: kTextFieldDecoration.copyWith(
+                decoration: AppDecoration.TEXT_FIELD_DECORATION.copyWith(
                   hintText: t.passwordPlaceholder,
                 ),
               ),
@@ -110,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
               MainButton(
                 title: t.logIn,
                 boxDecoration: BoxDecoration(
-                  color: Colors.lightBlueAccent,
+                  color: ProjectCodeColors.LIGHT_BLUE_ACCENT_COLOR,
                   borderRadius: BorderRadius.circular(24),
                 ),
                 onPressed: () async {
@@ -136,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   } catch (e) {
                     final snackBar = SnackBar(
                       content: Text(e.toString()),
-                      backgroundColor: Colors.red,
+                      backgroundColor: ProjectCodeColors.RED_COLOR,
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     await EasyLoading.dismiss();
@@ -153,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 title: t.facebookLogin.toUpperCase(),
                 onPressed: signInWithFacebook,
                 boxDecoration: BoxDecoration(
-                  color: Colors.blueAccent,
+                  color: ProjectCodeColors.BLUE_ACCENT_COLOR,
                   borderRadius: BorderRadius.circular(24),
                 ),
               ),

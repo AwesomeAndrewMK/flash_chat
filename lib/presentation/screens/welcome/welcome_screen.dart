@@ -29,7 +29,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     );
 
     animation = ColorTween(
-      begin: Colors.blueGrey,
+      begin: ProjectCodeColors.BLUE_GREY_COLOR,
     ).animate(controller);
 
     controller.forward();
@@ -62,11 +62,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   child: value
                       ? Icon(
                           Icons.nightlight_round,
-                          color: Colors.white,
+                          color: ProjectCodeColors.WHITE_COLOR,
                         )
                       : Icon(
                           Icons.wb_sunny,
-                          color: Colors.yellow,
+                          color: ProjectCodeColors.YELLOW_COLOR,
                         ),
                 );
               },
@@ -96,12 +96,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       TypewriterAnimatedTextKit(
                         text: [t.appTitle],
                         speed: Duration(milliseconds: 200),
-                        textStyle: font_logo,
+                        textStyle: Fonts.FONT_LOGO,
                       ),
                       TypewriterAnimatedTextKit(
                         text: [t.appAdditionalTitle],
                         speed: Duration(milliseconds: 200),
-                        textStyle: font_logo,
+                        textStyle: Fonts.FONT_LOGO,
                       ),
                     ],
                   ),
@@ -113,7 +113,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             ),
             MainButton(
               title: t.logIn,
-              color: Colors.lightBlueAccent,
+              color: ProjectCodeColors.LIGHT_BLUE_ACCENT_COLOR,
               onPressed: () {
                 Navigator.pushNamed(context, LoginScreen.id);
               },
@@ -123,7 +123,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             ),
             MainButton(
               title: t.register,
-              color: Colors.blueAccent,
+              color: ProjectCodeColors.BLUE_ACCENT_COLOR,
               onPressed: () {
                 Navigator.pushNamed(context, RegistrationScreen.id);
               },
@@ -131,7 +131,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             SizedBox(height: 30),
             MainButton(
               title: t.settings,
-              color: Colors.blueGrey,
+              color: ProjectCodeColors.BLUE_GREY_COLOR,
               onPressed: () {
                 Navigator.pushNamed(context, SettingsScreen.id);
               },

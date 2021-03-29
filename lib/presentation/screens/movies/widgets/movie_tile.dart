@@ -31,7 +31,9 @@ class MovieTile extends StatelessWidget {
       title: BlocBuilder<ThemeCubit, bool>(
         builder: (BuildContext context, value) {
           return PhysicalModel(
-            color: value ? Colors.transparent : Colors.white,
+            color: value
+                ? ProjectCodeColors.TRANSPARENT_COLOR
+                : ProjectCodeColors.WHITE_COLOR,
             elevation: 2,
             child: Container(
               decoration: BoxDecoration(
@@ -76,14 +78,14 @@ class MovieTile extends StatelessWidget {
                               children: [
                                 Text(
                                   item['title'].toString(),
-                                  style: font_movie_title,
+                                  style: Fonts.FONT_MOVIE_TITLE,
                                 ),
                                 SizedBox(height: 8),
                                 Text(
                                   item['overview'].toString(),
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
-                                  style: font_movie_description,
+                                  style: Fonts.FONT_MOVIE_DESCRIPTION,
                                 ),
                                 SizedBox(height: 8),
                               ],
@@ -93,46 +95,51 @@ class MovieTile extends StatelessWidget {
                             child: isFavourite == true
                                 ? Column()
                                 : Column(
-                              children: [
-                                Divider(
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(height: 8),
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () => onAddToFavourites!(),
-                                      child: Text(
-                                        isItemInFavourites == true
-                                            ? t.inFavourites.toUpperCase()
-                                            : t.addToFavourites.toUpperCase(),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: isItemInFavourites == true
-                                              ? Colors.grey
-                                              : mainAppColor,
-                                        ),
+                                    children: [
+                                      Divider(
+                                        color: ProjectCodeColors.GREY_COLOR,
                                       ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Share.share(
-                                            'https://www.themoviedb.org/movie/$movieId');
-                                      },
-                                      child: Text(
-                                        t.share.toUpperCase(),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: mainAppColor,
-                                        ),
+                                      SizedBox(height: 8),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () => onAddToFavourites!(),
+                                            child: Text(
+                                              isItemInFavourites == true
+                                                  ? t.inFavourites.toUpperCase()
+                                                  : t.addToFavourites
+                                                      .toUpperCase(),
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color:
+                                                    isItemInFavourites == true
+                                                        ? ProjectCodeColors
+                                                            .GREY_COLOR
+                                                        : ProjectCodeColors
+                                                            .MAIN_COLOR,
+                                              ),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Share.share(
+                                                  'https://www.themoviedb.org/movie/$movieId');
+                                            },
+                                            child: Text(
+                                              t.share.toUpperCase(),
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: ProjectCodeColors
+                                                    .MAIN_COLOR,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                    ],
+                                  ),
                           ),
                         ],
                       ),

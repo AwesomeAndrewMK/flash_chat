@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flash_chat_flutter/common/constants/colors.dart';
 
 class MainButton extends StatelessWidget {
   MainButton({
@@ -27,7 +28,7 @@ class MainButton extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: ProjectCodeColors.WHITE_COLOR,
             ),
           ),
         ),

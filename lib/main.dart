@@ -9,7 +9,7 @@ import 'package:flash_chat_flutter/presentation/screens/settings/cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flash_chat_flutter/common/constants/constants.dart';
 import 'package:flash_chat_flutter/common/utils/theme_cubit.dart';
-import 'package:flash_chat_flutter/data/services/themeValue.dart';
+import 'package:flash_chat_flutter/data/services/theme_value.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +30,7 @@ class FlashChat extends StatelessWidget {
       child: BlocBuilder<ThemeCubit, bool>(
         builder: (BuildContext context, value) {
           return MaterialApp(
-            theme: value ? darkTheme : lightTheme,
+            theme: value ? Themes.DARK_THEME : Themes.LIGHT_THEME,
             initialRoute: WelcomeScreen.id,
             routes: {
               WelcomeScreen.id: (context) => WelcomeScreen(),

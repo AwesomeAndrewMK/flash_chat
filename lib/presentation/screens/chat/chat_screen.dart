@@ -54,7 +54,7 @@ class _ChatScreenState extends State<ChatScreen> {
               email: loggedInUser.email ?? '',
             ),
             Container(
-              decoration: kMessageContainerDecoration,
+              decoration: AppDecoration.MESSAGE_CONTAINER_DECORATION,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
@@ -68,7 +68,8 @@ class _ChatScreenState extends State<ChatScreen> {
                           messageText = value;
                         });
                       },
-                      decoration: kMessageTextFieldDecoration.copyWith(
+                      decoration: AppDecoration.MESSAGE_TEXT_FIELD_DECORATION
+                          .copyWith(
                         hintText: t.messagePlaceholder,
                       ),
                     ),
@@ -91,8 +92,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: Text(
                       t.send,
                       style: messageText.isNotEmpty
-                          ? kSendButtonTextStyle
-                          : kInactiveSendButtonTextStyle,
+                          ? Styles.SEND_BUTTON_TEXT_STYLE
+                          : Styles.INACTIVE_SEND_BUTTON_TEXT_STYLE,
                     ),
                   ),
                 ],

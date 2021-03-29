@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flash_chat_flutter/presentation/widgets/message_bubble.dart';
+import 'package:flash_chat_flutter/common/constants/constants.dart';
 
 final _firestore = FirebaseFirestore.instance;
 
@@ -18,7 +19,7 @@ class MessagesStream extends StatelessWidget {
           return Expanded(
             child: Center(
               child: CircularProgressIndicator(
-                backgroundColor: Colors.lightBlueAccent,
+                backgroundColor: ProjectCodeColors.LIGHT_BLUE_ACCENT_COLOR,
               ),
             ),
           );

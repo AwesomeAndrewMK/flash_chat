@@ -55,7 +55,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     email = value;
                   });
                 },
-                decoration: kTextFieldDecoration.copyWith(
+                decoration: AppDecoration.TEXT_FIELD_DECORATION.copyWith(
                   hintText: t.emailPlaceholder,
                 ),
               ),
@@ -71,7 +71,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     password = value;
                   });
                 },
-                decoration: kTextFieldDecoration.copyWith(
+                decoration: AppDecoration.TEXT_FIELD_DECORATION.copyWith(
                   hintText: t.passwordPlaceholder,
                 ),
               ),
@@ -80,7 +80,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
               MainButton(
                 title: t.register,
-                color: Colors.blueAccent,
+                color: ProjectCodeColors.BLUE_ACCENT_COLOR,
                 onPressed: () async {
                   FocusScope.of(context).unfocus();
                   setState(() {
@@ -114,7 +114,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ? Text(
                       errorMessage,
                       style: TextStyle(
-                        color: Colors.red,
+                        color: ProjectCodeColors.RED_COLOR,
                       ),
                     )
                   : Container(),

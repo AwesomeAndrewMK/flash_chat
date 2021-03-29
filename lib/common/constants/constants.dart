@@ -1,5 +1,5 @@
-export 'color.dart';
-export 'style.dart';
-export 'decoration.dart';
-export 'font.dart';
-export 'theme.dart';
+export 'colors.dart';
+export 'styles.dart';
+export 'app_decoration.dart';
+export 'fonts.dart';
+export 'themes.dart';

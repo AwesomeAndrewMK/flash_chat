@@ -22,7 +22,7 @@ class MessageBubble extends StatelessWidget {
         children: [
           Text(
             sender,
-            style: font_small,
+            style: Fonts.FONT_SMALL,
           ),
           Material(
             borderRadius: BorderRadius.only(
@@ -32,14 +32,14 @@ class MessageBubble extends StatelessWidget {
               bottomRight: Radius.circular(30),
             ),
             elevation: 5,
-            color: isMe ? mainAppColor : Colors.white,
+            color: isMe ? ProjectCodeColors.MAIN_COLOR : ProjectCodeColors.WHITE_COLOR,
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Text(
                 text,
                 style: TextStyle(
                   fontSize: 15,
-                  color: isMe ? Colors.white : Colors.black,
+                  color: isMe ? ProjectCodeColors.WHITE_COLOR : ProjectCodeColors.BLACK_COLOR,
                 ),
               ),
             ),

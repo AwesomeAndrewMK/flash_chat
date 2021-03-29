@@ -28,7 +28,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Text(
               t.language,
               textAlign: TextAlign.center,
-              style: font_large_bold,
+              style: Fonts.FONT_LARGE_BOLD,
             ),
             SizedBox(height: 20),
             Center(
@@ -61,12 +61,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Text(
                 t.yourName,
                 textAlign: TextAlign.center,
-                style: font_large_bold,
+                style: Fonts.FONT_LARGE_BOLD,
               ),
             ),
             Text(
               '//bloc ${t.practice}',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: ProjectCodeColors.GREY_COLOR),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 10),
