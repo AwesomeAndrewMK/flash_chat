@@ -26,7 +26,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     final t = S.of(context);
 
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: AbsorbPointer(

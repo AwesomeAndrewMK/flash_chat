@@ -4,6 +4,8 @@ import 'package:flash_chat_flutter/presentation/widgets/widgets.dart';
 import 'package:flash_chat_flutter/common/constants/constants.dart';
 import 'package:flash_chat_flutter/generated/l10n.dart';
 import 'package:flash_chat_flutter/presentation/screens/screens.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flash_chat_flutter/common/utils/theme_cubit.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static const String id = 'welcome_screen';
@@ -28,7 +30,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
     animation = ColorTween(
       begin: Colors.blueGrey,
-      end: Colors.white,
     ).animate(controller);
 
     controller.forward();
@@ -52,8 +53,26 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     return Scaffold(
       backgroundColor: animation.value,
       appBar: AppBar(
-        backgroundColor: Colors.grey,
-        toolbarHeight: 0,
+        title: Row(
+          children: [
+            BlocBuilder<ThemeCubit, bool>(
+              builder: (context, value) {
+                return GestureDetector(
+                  onTap: context.read<ThemeCubit>().switchTheme,
+                  child: value
+                      ? Icon(
+                          Icons.nightlight_round,
+                          color: Colors.white,
+                        )
+                      : Icon(
+                          Icons.wb_sunny,
+                          color: Colors.yellow,
+                        ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),

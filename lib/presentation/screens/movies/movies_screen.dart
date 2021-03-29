@@ -1,6 +1,8 @@
+import 'package:flash_chat_flutter/common/utils/theme_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/common/constants/constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flash_chat_flutter/data/services/movieDB.dart';
 import 'package:grouped_list/grouped_list.dart';
@@ -43,7 +45,26 @@ class _MoviesScreenState extends State<MoviesScreen> {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: mainAppColor,
+            title: Row(
+              children: [
+                BlocBuilder<ThemeCubit, bool>(
+                  builder: (context, value) {
+                    return GestureDetector(
+                      onTap: context.read<ThemeCubit>().switchTheme,
+                      child: value
+                          ? Icon(
+                              Icons.nightlight_round,
+                              color: Colors.white,
+                            )
+                          : Icon(
+                              Icons.wb_sunny,
+                              color: Colors.yellow,
+                            ),
+                    );
+                  },
+                ),
+              ],
+            ),
             actions: [
               UserAvatar(_avatar),
               IconButton(
@@ -83,6 +104,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
                           },
                           groupBy: (dynamic item) =>
                               formatDate(item['release_date']),
+                          stickyHeaderBackgroundColor: Colors.transparent,
                           groupSeparatorBuilder: (String val) {
                             return Padding(
                               padding: EdgeInsets.fromLTRB(8, 24, 8, 8),

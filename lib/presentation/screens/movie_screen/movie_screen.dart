@@ -19,7 +19,6 @@ class _MovieScreenState extends State<MovieScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.item['title'].toString()),
-        backgroundColor: mainAppColor,
       ),
       body: Container(
         child: Padding(
