@@ -1,4 +1,5 @@
 import 'package:flash_chat_flutter/common/utils/theme_cubit.dart';
+import 'package:flash_chat_flutter/data/models/movie/movie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/common/constants/constants.dart';
@@ -24,8 +25,8 @@ class _MoviesScreenState extends State<MoviesScreen> {
   MovieDB movieDB = MovieDB();
 
   String? _avatar;
-  List<dynamic> movies = [];
-  List<dynamic> favouritesMovies = [];
+  List<Movie> movies = [];
+  List<Movie> favouritesMovies = [];
 
   @override
   void initState() {
@@ -95,15 +96,13 @@ class _MoviesScreenState extends State<MoviesScreen> {
                         child: GroupedListView(
                           elements: movies,
                           useStickyGroupSeparators: true,
-                          itemComparator: (dynamic a, dynamic b) =>
-                              b['vote_average']
-                                  .toDouble()
-                                  .compareTo(a['vote_average'].toDouble()),
+                          itemComparator: (Movie a, Movie b) =>
+                              b.vote_average.compareTo(a.vote_average),
                           groupComparator: (dynamic a, dynamic b) {
                             return a.compareTo(b);
                           },
-                          groupBy: (dynamic item) =>
-                              formatDate(item['release_date']),
+                          groupBy: (Movie item) =>
+                              formatDate(item.release_date),
                           stickyHeaderBackgroundColor: Colors.transparent,
                           groupSeparatorBuilder: (String val) {
                             return Padding(
@@ -114,11 +113,11 @@ class _MoviesScreenState extends State<MoviesScreen> {
                               ),
                             );
                           },
-                          itemBuilder: (context, dynamic element) {
+                          itemBuilder: (context, Movie element) {
                             bool isItemInFavourites(item) {
                               var contain = favouritesMovies.where(
                                   (favouriteMovie) =>
-                                      favouriteMovie['id'] == item['id']);
+                                      favouriteMovie.id == item.id);
                               if (contain.isEmpty) {
                                 return false;
                               } else {
@@ -131,7 +130,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
                                 setState(() {
                                   favouritesMovies.removeAt(favouritesMovies
                                       .indexWhere((favouriteMovie) =>
-                                          favouriteMovie['id'] == movie['id']));
+                                          favouriteMovie.id == movie.id));
                                   movieDB
                                       .storeFavouriteMovies(favouritesMovies);
                                 });
@@ -179,7 +178,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
                         itemBuilder: (context, index) {
                           var item = favouritesMovies[index];
                           return Dismissible(
-                            key: Key(item['id'].toString()),
+                            key: Key(item.id.toString()),
                             direction: DismissDirection.endToStart,
                             onDismissed: (direction) {
                               setState(() {
@@ -223,9 +222,9 @@ class _MoviesScreenState extends State<MoviesScreen> {
   }
 
   Future getMovies() async {
-    List<dynamic> res = await movieDB.getMoviesList(showErrorSnackBar);
+    var moviesListData = await movieDB.getMoviesList(showErrorSnackBar);
     setState(() {
-      movies = res;
+      movies = moviesListData.moviesList;
       // Uncomment it if you want to render further releases
 
       // movies = res
@@ -236,8 +235,8 @@ class _MoviesScreenState extends State<MoviesScreen> {
   }
 
   Future getFavouriteMovies() async {
-    List<dynamic> favMovies = await movieDB.getFavouriteMovies();
-    favouritesMovies = favMovies;
+    var favMoviesData = await movieDB.getFavouriteMovies();
+    favouritesMovies = favMoviesData.moviesList;
   }
 
   Future getUserAvatar() async {

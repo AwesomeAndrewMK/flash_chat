@@ -1,3 +1,4 @@
+import 'package:flash_chat_flutter/data/models/movie/movie.dart';
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/common/constants/constants.dart';
 import 'package:share/share.dart';
@@ -15,7 +16,7 @@ class MovieTile extends StatelessWidget {
     this.onMovieTap,
   });
 
-  final dynamic item;
+  final Movie item;
   final VoidCallback? onAddToFavourites;
   final VoidCallback? onMovieTap;
   final bool? isFavourite;
@@ -53,7 +54,7 @@ class MovieTile extends StatelessWidget {
                           children: [
                             Image(
                               image: NetworkImage(
-                                'https://image.tmdb.org/t/p/w500/${item['backdrop_path']}',
+                                'https://image.tmdb.org/t/p/w500/${item.backdrop_path}',
                               ),
                               fit: BoxFit.cover,
                               width: 50,
@@ -62,7 +63,7 @@ class MovieTile extends StatelessWidget {
                             SizedBox(
                               height: 8,
                             ),
-                            Text(item['vote_average'].toString()),
+                            Text(item.vote_average.toString()),
                           ],
                         ),
                       ),
@@ -77,12 +78,12 @@ class MovieTile extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  item['title'].toString(),
+                                  item.title,
                                   style: Fonts.FONT_MOVIE_TITLE,
                                 ),
                                 SizedBox(height: 8),
                                 Text(
-                                  item['overview'].toString(),
+                                  item.overview,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   style: Fonts.FONT_MOVIE_DESCRIPTION,

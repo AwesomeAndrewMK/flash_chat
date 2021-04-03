@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flash_chat_flutter/common/constants/constants.dart';
 import 'package:flash_chat_flutter/generated/l10n.dart';
+import 'package:flash_chat_flutter/data/models/movie/movie.dart';
 
 class MovieScreen extends StatefulWidget {
   static String id = 'movie';
   MovieScreen(this.item);
-  final Map item;
+  final Movie item;
 
   @override
   _MovieScreenState createState() => _MovieScreenState();
@@ -18,7 +19,7 @@ class _MovieScreenState extends State<MovieScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.item['title'].toString()),
+        title: Text(widget.item.title),
       ),
       body: Container(
         child: Padding(
@@ -30,7 +31,7 @@ class _MovieScreenState extends State<MovieScreen> {
               ),
               Image(
                 image: NetworkImage(
-                  'https://image.tmdb.org/t/p/w500/${widget.item['backdrop_path']}',
+                  'https://image.tmdb.org/t/p/w500/${widget.item.backdrop_path}',
                 ),
               ),
               SizedBox(
@@ -45,7 +46,7 @@ class _MovieScreenState extends State<MovieScreen> {
                   ),
                   Expanded(
                     child: Text(
-                      widget.item['title'].toString(),
+                      widget.item.title,
                       style: Fonts.FONT_LARGE,
                     ),
                   ),
@@ -59,7 +60,7 @@ class _MovieScreenState extends State<MovieScreen> {
                     style: Fonts.FONT_LARGE_BOLD,
                   ),
                   Text(
-                    widget.item['vote_average'].toString(),
+                    widget.item.vote_average.toString(),
                     style: Fonts.FONT_LARGE,
                   ),
                 ],
@@ -69,7 +70,7 @@ class _MovieScreenState extends State<MovieScreen> {
                 style: Fonts.FONT_LARGE_BOLD,
               ),
               Text(
-                widget.item['overview'].toString(),
+                widget.item.overview.toString(),
                 style: Fonts.FONT_MEDIUM,
               ),
               SizedBox(

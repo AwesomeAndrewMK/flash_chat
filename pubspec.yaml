@@ -29,11 +29,15 @@ dependencies:
   jiffy: ^4.0.0
   flutter_bloc: ^7.0.0
   shared_preferences: ^2.0.5
+  freezed_annotation: ^0.14.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   pedantic: ^1.11.0
+  build_runner: ^1.12.2
+  freezed: ^0.14.1+1
+  json_serializable: ^4.1.0
 
 flutter:
   uses-material-design: true

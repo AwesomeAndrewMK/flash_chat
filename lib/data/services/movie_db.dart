@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:flash_chat_flutter/data/services/db.dart';
 import 'package:flash_chat_flutter/data/models/movies_model.dart';
+import 'package:flash_chat_flutter/data/models/movies_list/movies_list.dart';
 
 class MovieDB {
   final String _apiKey = '442f08ed580949109afb21f8d78ec790';
@@ -12,7 +13,7 @@ class MovieDB {
     return _results.map((item) => MoviesModel.fromMap(item)).toList();
   }
 
-  Future getMoviesList(VoidCallback errorFunction) async {
+  Future<MoviesList> getMoviesList(VoidCallback errorFunction) async {
     var uri = Uri.https('$_url', '/3/movie/upcoming', {'api_key': _apiKey});
     try {
       var response = await get(uri);
@@ -30,7 +31,10 @@ class MovieDB {
         await DB.insert(MoviesModel.table, item);
       }
 
-      return json.decode(response.body)['results'];
+      var moviesListData = MoviesList.fromJson(
+          {'moviesList': json.decode(response.body)['results']});
+
+      return moviesListData;
     } catch (e) {
       print(e);
       errorFunction();
@@ -39,9 +43,9 @@ class MovieDB {
 
       if (dbData.any((el) => el.name == 'movies')) {
         var movies = dbData.firstWhere((el) => el.name == 'movies');
-        return json.decode(movies.jsonMoviesDBData)['results'];
+        return MoviesList(json.decode(movies.jsonMoviesDBData)['results']);
       } else {
-        return [];
+        return MoviesList([]);
       }
     }
   }
@@ -62,16 +66,20 @@ class MovieDB {
     }
   }
 
-  Future getFavouriteMovies() async {
+  Future<MoviesList> getFavouriteMovies() async {
     var dbData = await _getDBData();
 
     if (dbData.any((el) => el.name == 'favouritesMovies')) {
       var movies = dbData.firstWhere(
         (el) => el.name == 'favouritesMovies',
       );
-      return json.decode(movies.jsonMoviesDBData);
+
+      var moviesListData = MoviesList.fromJson(
+          {'moviesList': json.decode(movies.jsonMoviesDBData)});
+
+      return moviesListData;
     } else {
-      return [];
+      return MoviesList([]);
     }
   }
 }
